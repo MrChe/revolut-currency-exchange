@@ -2516,6 +2516,11 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+cashify@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/cashify/-/cashify-2.5.0.tgz#6dd6b7a9513c50a0db679641ffff8245af0875b2"
+  integrity sha512-k9yNgAKWbYxX0UATHrg7u565KpV6KdQNOSzfzEGBP6OzIsq5TKzY8O0trIV+ibGw+YJM1Oyf7Lcbf3uEqRVXRw==
+
 caw@^2.0.0, caw@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/caw/-/caw-2.0.1.tgz#6c3ca071fc194720883c2dc5da9b074bfc7e9e95"
@@ -3024,6 +3029,11 @@ csstype@^3.0.2:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.7.tgz#2a5fb75e1015e84dd15692f71e89a1450290950b"
   integrity sha512-KxnUB0ZMlnUWCsx2Z8MUsr6qV6ja1w9ArPErJaJaF8a5SOWoHLIszeCTKGRGRgtLgYrs1E8CHkNSP1VZTTPc9g==
+
+currency.js@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/currency.js/-/currency.js-2.0.3.tgz#3f266c241074eabfa4a6a53c3f477fac17c781a7"
+  integrity sha512-3rtzulRMwUJHmH0EPKiO/taYEGWlLSG2rpBOaHhfaY1dPGqK595mjg4t4bksy7glHEPZry7l5xSpXECs1eFrWg==
 
 currently-unhandled@^0.4.1:
   version "0.4.1"
@@ -3569,9 +3579,9 @@ escodegen@^2.0.0:
     source-map "~0.6.1"
 
 eslint-config-prettier@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.1.0.tgz#4ef1eaf97afe5176e6a75ddfb57c335121abc5a6"
-  integrity sha512-oKMhGv3ihGbCIimCAjqkdzx2Q+jthoqnXSP+d86M9tptwugycmTFdVR4IpLgq2c4SHifbwO90z2fQ8/Aio73yw==
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.2.0.tgz#78de77d63bca8e9e59dae75a614b5299925bb7b3"
+  integrity sha512-dWV9EVeSo2qodOPi1iBYU/x6F6diHv8uujxbxr77xExs3zTAlNXvVZKiyLsQGNz7yPV2K49JY5WjPzNIuDc2Bw==
 
 eslint-plugin-prettier@^3.3.1:
   version "3.3.1"
