@@ -1,4 +1,5 @@
 import { ExchangeModel } from "./ExchangeModel";
+import { AccountModel } from "./AccountModel";
 import { DashboardModel } from "./DashboardModel";
 import { ApiModel } from "./ApiModel";
 

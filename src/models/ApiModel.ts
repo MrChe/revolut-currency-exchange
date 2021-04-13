@@ -1,6 +1,5 @@
 import Axios, { AxiosInstance } from "axios";
 import { IRates } from "../models/ExchangeModel";
-import { filterRates } from "../utils/currencies";
 
 const APP_ID = "e285ab8ceb004923b3e423a0d0583915";
 

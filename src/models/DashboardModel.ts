@@ -7,8 +7,4 @@ export class DashboardModel {
     // makeAutoObservable(this, { rootStore: false });
     this.rootStore = rootStore;
   }
-
-  getHello = () => {
-    return "Hello";
-  };
 }

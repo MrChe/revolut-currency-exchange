@@ -3,6 +3,7 @@ import { action, makeAutoObservable, observable } from "mobx";
 import { Cashify } from "cashify";
 import { Options } from "cashify/dist/lib/options";
 import currency from "currency.js";
+import { AccountModel } from "../models/AccountModel";
 
 export interface IRates {
   disclaimer: string;
@@ -12,10 +13,10 @@ export interface IRates {
   rates: Record<string, number>;
 }
 
-export class CurrencyData {
-  public top?: string;
-  public bottom?: string;
-  constructor(data: CurrencyData) {
+export class ActiveAccounts {
+  public top?: AccountModel | null;
+  public bottom?: AccountModel | null;
+  constructor(data: ActiveAccounts) {
     this.top = data.top;
     this.bottom = data.bottom;
     makeAutoObservable(this, {
@@ -29,18 +30,20 @@ export class ExchangeModel {
   private readonly rootModel: RootModel;
   public rateData: IRates | null;
   private cashify: Cashify;
-  public currencyData: CurrencyData;
+  public accounts: AccountModel[];
+  public activeAccounts: ActiveAccounts | null;
   constructor(rootModel: RootModel) {
     this.rootModel = rootModel;
     this.rateData = null;
     this.cashify = new Cashify({});
-    this.currencyData = new CurrencyData({ top: "", bottom: "" });
+    this.accounts = [];
+    this.activeAccounts = null;
     makeAutoObservable(this, {
       rateData: observable,
-      currencyData: observable,
+      accounts: observable,
       setRates: action,
-      setCurrencyData: action,
       convertCurrency: action,
+      setActiveAccounts: action,
       formatCurrency: action,
     });
   }
@@ -56,8 +59,24 @@ export class ExchangeModel {
     });
   };
 
-  public setCurrencyData = (currencyData: CurrencyData): void => {
-    this.currencyData = currencyData;
+  public exchange = (topBalance: number, bottomBalance: number): void => {
+    this.activeAccounts?.top?.updateBalance(
+      this.activeAccounts?.top?.balance - topBalance,
+    );
+
+    this.activeAccounts?.bottom?.updateBalance(
+      this.activeAccounts?.bottom?.balance + bottomBalance,
+    );
+  };
+
+  public findAccountByCurrency = (
+    currency: string,
+  ): AccountModel | undefined => {
+    return this.accounts.find((account) => account.currency === currency);
+  };
+
+  public setActiveAccounts = (activeAccounts: ActiveAccounts): void => {
+    this.activeAccounts = activeAccounts;
   };
 
   public getLatestRates = async (): Promise<void> => {
@@ -66,9 +85,16 @@ export class ExchangeModel {
       if (data) {
         this.setRates(data);
         this.setCashify(data);
-        this.setCurrencyData({
-          top: Object.keys(data.rates)[0],
-          bottom: Object.keys(data.rates)[1],
+        Object.keys(data.rates).forEach((key: string) => {
+          this.accounts.push(
+            new AccountModel({
+              currency: key,
+            }),
+          );
+        });
+        this.setActiveAccounts({
+          top: this.findAccountByCurrency("USD"),
+          bottom: this.findAccountByCurrency("EUR"),
         });
       }
     } catch (error) {

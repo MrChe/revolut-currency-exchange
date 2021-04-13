@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../models/connect";
 
@@ -14,23 +14,17 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     string | number | null
   >(null);
 
-  useEffect(() => {
-    if (!ExchangeModel.rateData) {
-      ExchangeModel.getLatestRates();
-    }
-  }, [ExchangeModel.rateData]);
-
   const handleChangeTopSelect = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    ExchangeModel.setCurrencyData({
-      ...ExchangeModel.currencyData,
-      top: event.target.value,
+    ExchangeModel.setActiveAccounts({
+      ...ExchangeModel.activeAccounts,
+      top: ExchangeModel.findAccountByCurrency(event.target.value),
     });
     setBottomInputValue(
       ExchangeModel.convertCurrency(topInputValue ? topInputValue : 0, {
-        from: ExchangeModel.currencyData?.bottom || "",
-        to: ExchangeModel.currencyData?.top || "",
+        from: ExchangeModel.activeAccounts?.bottom?.currency || "",
+        to: ExchangeModel.activeAccounts?.top?.currency || "",
       }),
     );
   };
@@ -38,14 +32,14 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   const handleChangeBottomSelect = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    ExchangeModel.setCurrencyData({
-      ...ExchangeModel.currencyData,
-      bottom: event.target.value,
+    ExchangeModel.setActiveAccounts({
+      ...ExchangeModel.activeAccounts,
+      bottom: ExchangeModel.findAccountByCurrency(event.target.value),
     });
     setTopInputValue(
       ExchangeModel.convertCurrency(bottomInputValue ? bottomInputValue : 0, {
-        from: ExchangeModel.currencyData?.bottom || "",
-        to: ExchangeModel.currencyData?.top || "",
+        from: ExchangeModel.activeAccounts?.bottom?.currency || "",
+        to: ExchangeModel.activeAccounts?.top?.currency || "",
       }),
     );
   };
@@ -60,8 +54,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
       setTopInputValue(value ? value : "");
       setBottomInputValue(
         ExchangeModel.convertCurrency(value ? value : 0, {
-          from: ExchangeModel.currencyData?.top || "",
-          to: ExchangeModel.currencyData?.bottom || "",
+          from: ExchangeModel.activeAccounts?.top?.currency || "",
+          to: ExchangeModel.activeAccounts?.bottom?.currency || "",
         }),
       );
     }
@@ -78,71 +72,97 @@ export const Exchange = observer(function Exchange(): JSX.Element {
       setBottomInputValue(value ? value : "");
       setTopInputValue(
         ExchangeModel.convertCurrency(value ? value : 0, {
-          from: ExchangeModel.currencyData?.bottom || "",
-          to: ExchangeModel.currencyData?.top || "",
+          from: ExchangeModel.activeAccounts?.bottom?.currency || "",
+          to: ExchangeModel.activeAccounts?.top?.currency || "",
         }),
       );
     }
   };
 
-  console.log("topInputValue", topInputValue);
-  console.log("bottomInputValue", bottomInputValue);
+  const handleExchange = () => {
+    if (topInputValue && bottomInputValue) {
+      ExchangeModel.exchange(Number(topInputValue), Number(bottomInputValue));
+    }
+  };
+
+  console.log("accounts", ExchangeModel?.accounts);
+  console.log("activeAccounts", ExchangeModel?.activeAccounts);
   return (
     <div className={styles.ExchangePage}>
-      {ExchangeModel.rateData && ExchangeModel.currencyData && (
-        <div className={styles.wrapper}>
-          <div>
-            <select
-              name="top_currency"
-              id="top_currency"
-              onChange={handleChangeTopSelect}
-              value={ExchangeModel.currencyData.top}
-            >
-              {Object.keys(ExchangeModel.rateData.rates).map((key: string) => {
-                if (key !== ExchangeModel.currencyData?.bottom) {
-                  return (
-                    <option key={key} value={key}>
-                      {key}
-                    </option>
-                  );
-                }
-              })}
-            </select>
-            <label htmlFor="top">{`TOP: ${ExchangeModel.currencyData.top}`}</label>
-            <input
-              type="text"
-              id="top"
-              onChange={handleTopChangeValue}
-              value={topInputValue ? topInputValue : ""}
-            />
+      {ExchangeModel.activeAccounts && (
+        <div className={styles.container}>
+          <div className={styles.wrapper}>
+            <div>
+              <div>
+                <select
+                  name="top_currency"
+                  id="top_currency"
+                  onChange={handleChangeTopSelect}
+                  value={ExchangeModel.activeAccounts.top?.currency}
+                >
+                  {ExchangeModel.accounts.map((account) => {
+                    if (
+                      account.currency !==
+                      ExchangeModel.activeAccounts?.bottom?.currency
+                    ) {
+                      return (
+                        <option key={account.currency} value={account.currency}>
+                          {account.currency}
+                        </option>
+                      );
+                    }
+                  })}
+                </select>
+                <label htmlFor="top">{`TOP: ${ExchangeModel.activeAccounts.top?.currency}`}</label>
+                <input
+                  type="text"
+                  id="top"
+                  onChange={handleTopChangeValue}
+                  value={topInputValue ? topInputValue : ""}
+                />
+              </div>
+              <p>{`Balance: ${ExchangeModel.activeAccounts?.top?.balance}`}</p>
+            </div>
+            <div>
+              <div>
+                <select
+                  name="bottom_currency"
+                  id="bottom_currency"
+                  onChange={handleChangeBottomSelect}
+                  value={ExchangeModel.activeAccounts.bottom?.currency}
+                >
+                  {ExchangeModel.accounts.map((account) => {
+                    if (
+                      account.currency !==
+                      ExchangeModel.activeAccounts?.top?.currency
+                    ) {
+                      return (
+                        <option key={account.currency} value={account.currency}>
+                          {account.currency}
+                        </option>
+                      );
+                    }
+                  })}
+                </select>
+                <label htmlFor="bottom">
+                  {`BOTTOM: ${ExchangeModel.activeAccounts?.bottom?.currency}`}
+                </label>
+                <input
+                  type="text"
+                  id="bottom"
+                  onChange={handleBottomChangeValue}
+                  value={bottomInputValue ? bottomInputValue : ""}
+                />
+              </div>
+              <p>{`Balance: ${ExchangeModel.activeAccounts?.bottom?.balance}`}</p>
+            </div>
           </div>
-          <div>
-            <select
-              name="bottom_currency"
-              id="bottom_currency"
-              onChange={handleChangeBottomSelect}
-              value={ExchangeModel.currencyData.bottom}
-            >
-              {Object.keys(ExchangeModel.rateData.rates).map((key: string) => {
-                if (key !== ExchangeModel.currencyData?.top) {
-                  return (
-                    <option key={key} value={key}>
-                      {key}
-                    </option>
-                  );
-                }
-              })}
-            </select>
-            <label htmlFor="bottom">
-              {`BOTTOM: ${ExchangeModel.currencyData?.bottom}`}
-            </label>
-            <input
-              type="text"
-              id="bottom"
-              onChange={handleBottomChangeValue}
-              value={bottomInputValue ? bottomInputValue : ""}
-            />
-          </div>
+          <button
+            onClick={handleExchange}
+            disabled={!topInputValue && !bottomInputValue}
+          >
+            Ecxchange
+          </button>
         </div>
       )}
     </div>

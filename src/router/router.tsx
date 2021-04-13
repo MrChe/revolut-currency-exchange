@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Account } from "../pages/Account/Account";
+import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { Exchange } from "../pages/Exchage/Exchage";
 
 export const ApplicationRouter = (): JSX.Element => {
@@ -8,7 +8,7 @@ export const ApplicationRouter = (): JSX.Element => {
     <Router>
       <Switch>
         <Route path="/" exact>
-          <Account />
+          <Dashboard />
         </Route>
         <Route path="/exchange" exact>
           <Exchange />
