@@ -1,25 +1,27 @@
 // holds a reference to the store (singleton)
-import React, { createContext, ReactNode, useContext } from 'react';
-import { RootModel } from './RootModel';
-
-let store: RootModel;
+import React, { createContext, ReactNode, useContext } from "react";
+import { RootModel } from "./RootModel";
 
 // create the context
-const StoreContext = createContext<RootModel | null>(null);
+const MobxContext = createContext<RootModel | null>(null);
 
 // create the provider component
-export const MobxRootProvider = ({ children }: { children: ReactNode }): JSX.Element => {
+export const MobxProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element => {
   // only create the store once ( store is a singleton)
-  const root = store ?? new RootModel();
+  const root = new RootModel();
 
-  return <StoreContext.Provider value={root}>{children}</StoreContext.Provider>;
+  return <MobxContext.Provider value={root}>{children}</MobxContext.Provider>;
 };
 
 // create the hook
-export const useStore = () => {
-  const context = useContext(StoreContext);
-  if (context === undefined) {
-    throw new Error('useStore must be used within MobxRootProvider');
+export const useStore = (): RootModel => {
+  const context = useContext(MobxContext);
+  if (!context) {
+    throw new Error("useStore must be used within MobxContext");
   }
 
   return context;

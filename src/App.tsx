@@ -1,14 +1,18 @@
-import React from 'react';
-import styles from './App.module.scss';
-import { MobxRootProvider } from './models/connect';
-import { ApplicationRouter } from './router/router';
+import React from "react";
+import { hot } from "react-hot-loader/root";
+import { MobxProvider } from "./models/connect";
+import { ApplicationRouter } from "./router/router";
 
-export const App = (): JSX.Element => {
+import styles from "./App.module.scss";
+
+const App = (): JSX.Element => {
   return (
     <div className={styles.App}>
-      <MobxRootProvider>
+      <MobxProvider>
         <ApplicationRouter />
-      </MobxRootProvider>
+      </MobxProvider>
     </div>
   );
 };
+
+export default hot(App);

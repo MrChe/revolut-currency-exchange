@@ -1,9 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Account } from '../pages/Account/Account';
-import { Exchange } from '../pages/Exchage/Exchage';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Account } from "../pages/Account/Account";
+import { Exchange } from "../pages/Exchage/Exchage";
 
-export const ApplicationRouter = () => {
+export const ApplicationRouter = (): JSX.Element => {
   return (
     <Router>
       <Switch>
