@@ -2,6 +2,7 @@
 const { merge } = require("webpack-merge");
 const webpack = require("webpack");
 const commonConfig = require("./common");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = merge(commonConfig, {
   mode: "development",
@@ -18,5 +19,70 @@ module.exports = merge(commonConfig, {
   devtool: "cheap-module-source-map",
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // enable HMR globally
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+    }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: "css-loader",
+          },
+        ],
+      },
+      {
+        test: /\.module\.s(a|c)ss$/,
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: true,
+              modules: {
+                compileType: "module",
+                localIdentName: "[local]___[hash:base64:5]",
+              },
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              sourceMap: true,
+              postcssOptions: {
+                plugins: [
+                  ["postcss-preset-env", {}],
+                  ["autoprefixer", {}],
+                ],
+              },
+            },
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        exclude: /\.module.(s(a|c)ss)$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
 });
