@@ -3035,6 +3035,11 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.7.tgz#2a5fb75e1015e84dd15692f71e89a1450290950b"
   integrity sha512-KxnUB0ZMlnUWCsx2Z8MUsr6qV6ja1w9ArPErJaJaF8a5SOWoHLIszeCTKGRGRgtLgYrs1E8CHkNSP1VZTTPc9g==
 
+currency-symbol-map@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/currency-symbol-map/-/currency-symbol-map-5.0.1.tgz#447629c7e26730299aa6174c55bde281f682b2e5"
+  integrity sha512-2yHvoVBPIS9Dx7fjritu9l7UHWo4Z3D2oQnQj8AYwUee2j/PAcoHB4issCqwabfbipISZ/iG6vVYsfrAoks2eA==
+
 currency.js@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/currency.js/-/currency.js-2.0.3.tgz#3f266c241074eabfa4a6a53c3f477fac17c781a7"
@@ -6481,6 +6486,11 @@ mkdirp@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
+mobx-persist-store@^0.5.30:
+  version "0.5.30"
+  resolved "https://registry.yarnpkg.com/mobx-persist-store/-/mobx-persist-store-0.5.30.tgz#1f578478af87c458e28bd120d8e63b388b5cbd47"
+  integrity sha512-I4NW8ly0yD06+WPqzQb30dwRzrL2Uhnwd+40EBd+Zlorm9M7rc1Zx3Z6OTBjwqYVDweqLKKXttc66LpiKS6f1A==
 
 mobx-react-lite@^3.2.0:
   version "3.2.0"

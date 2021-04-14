@@ -114,6 +114,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
                   })}
                 </select>
                 <label htmlFor="top">{`TOP: ${ExchangeModel.activeAccounts.top?.currency}`}</label>
+                -
                 <input
                   type="text"
                   id="top"
@@ -121,7 +122,13 @@ export const Exchange = observer(function Exchange(): JSX.Element {
                   value={topInputValue ? topInputValue : ""}
                 />
               </div>
-              <p>{`Balance: ${ExchangeModel.activeAccounts?.top?.balance}`}</p>
+              <p>{`Balance: ${
+                ExchangeModel.activeAccounts?.top &&
+                ExchangeModel.formatCurrency(
+                  ExchangeModel.activeAccounts?.top?.balance,
+                  ExchangeModel.activeAccounts?.top?.currency,
+                )
+              }`}</p>
             </div>
             <div>
               <div>
@@ -147,6 +154,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
                 <label htmlFor="bottom">
                   {`BOTTOM: ${ExchangeModel.activeAccounts?.bottom?.currency}`}
                 </label>
+                +
                 <input
                   type="text"
                   id="bottom"
@@ -154,7 +162,13 @@ export const Exchange = observer(function Exchange(): JSX.Element {
                   value={bottomInputValue ? bottomInputValue : ""}
                 />
               </div>
-              <p>{`Balance: ${ExchangeModel.activeAccounts?.bottom?.balance}`}</p>
+              <p>{`Balance: ${
+                ExchangeModel.activeAccounts?.bottom &&
+                ExchangeModel.formatCurrency(
+                  ExchangeModel.activeAccounts?.bottom?.balance,
+                  ExchangeModel.activeAccounts?.bottom?.currency,
+                )
+              }`}</p>
             </div>
           </div>
           <button

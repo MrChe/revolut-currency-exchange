@@ -1,10 +1,12 @@
 import { RootModel } from "./RootModel";
-// import { makeAutoObservable } from 'mobx';
+// import { persistStore } from "../utils/mobx-persist.utils";
+import { makeAutoObservable } from "mobx";
 
 export class DashboardModel {
   private rootStore: RootModel;
   constructor(rootStore: RootModel) {
-    // makeAutoObservable(this, { rootStore: false });
     this.rootStore = rootStore;
+    makeAutoObservable(this);
+    // persistStore(this, ["dashboard"], "DashboardModel");
   }
 }

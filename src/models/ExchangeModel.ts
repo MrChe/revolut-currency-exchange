@@ -2,8 +2,10 @@ import { RootModel } from "./RootModel";
 import { action, makeAutoObservable, observable } from "mobx";
 import { Cashify } from "cashify";
 import { Options } from "cashify/dist/lib/options";
-import currency from "currency.js";
+import currencyJS from "currency.js";
 import { AccountModel } from "../models/AccountModel";
+import getSymbolFromCurrency from "currency-symbol-map";
+// import { persistStore } from "../utils/mobx-persist.utils";
 
 export interface IRates {
   disclaimer: string;
@@ -23,39 +25,66 @@ export class ActiveAccounts {
       top: observable,
       bottom: observable,
     });
+
+    // persistStore(this, ["top", "bottom"], "ActiveAccounts");
   }
 }
 
 export class ExchangeModel {
   private readonly rootModel: RootModel;
-  public rateData: IRates | null;
-  private cashify: Cashify;
+  // public ratesData: IRates | null;
+  public cashify: Cashify;
   public accounts: AccountModel[];
   public activeAccounts: ActiveAccounts | null;
   constructor(rootModel: RootModel) {
     this.rootModel = rootModel;
-    this.rateData = null;
-    this.cashify = new Cashify({});
     this.accounts = [];
     this.activeAccounts = null;
+    // this.ratesData = null;
+    this.cashify = new Cashify({});
     makeAutoObservable(this, {
-      rateData: observable,
       accounts: observable,
-      setRates: action,
+      activeAccounts: observable,
+      // cashify: observable,
+      // ratesData: observable,
       convertCurrency: action,
       setActiveAccounts: action,
-      formatCurrency: action,
+      // formatCurrency: action,
+      // setAccounts: action,
+      // findAccountByCurrency: action,
+      // getLatestRates: action,
+      // initCashify: action,
+      // exchange: action,
     });
+    // persistStore(
+    //   this,
+    //   [
+    //     "accounts",
+    //     "activeAccounts",
+    //     // "ratesData"
+    //   ],
+    //   "ExchangeModel",
+    // );
   }
 
-  public setRates = (rateData: IRates): void => {
-    this.rateData = rateData;
+  // public setRatesData = (ratesData: IRates): void => {
+  //   this.ratesData = ratesData;
+  // };
+
+  public initCashify = (ratesData: IRates): void => {
+    this.cashify = new Cashify({
+      base: ratesData.base,
+      rates: ratesData.rates,
+    });
   };
 
-  private setCashify = (rateData: IRates): void => {
-    this.cashify = new Cashify({
-      base: rateData.base,
-      rates: rateData.rates,
+  public setAccounts = (ratesData: IRates): void => {
+    Object.keys(ratesData.rates).forEach((key: string) => {
+      this.accounts.push(
+        new AccountModel({
+          currency: key,
+        }),
+      );
     });
   };
 
@@ -83,15 +112,8 @@ export class ExchangeModel {
     try {
       const data = await this.rootModel.ApiModel.getLatestRatesRequest();
       if (data) {
-        this.setRates(data);
-        this.setCashify(data);
-        Object.keys(data.rates).forEach((key: string) => {
-          this.accounts.push(
-            new AccountModel({
-              currency: key,
-            }),
-          );
-        });
+        this.initCashify(data);
+        this.setAccounts(data);
         this.setActiveAccounts({
           top: this.findAccountByCurrency("USD"),
           bottom: this.findAccountByCurrency("EUR"),
@@ -111,8 +133,10 @@ export class ExchangeModel {
 
   public formatCurrency = (
     value: currency.Any,
-    options?: currency.Options,
+    currencyName: string,
   ): string => {
-    return currency(value, options).format();
+    return currencyJS(value, {
+      symbol: getSymbolFromCurrency(currencyName),
+    }).format();
   };
 }
