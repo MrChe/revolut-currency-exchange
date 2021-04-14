@@ -162,13 +162,30 @@ export const Exchange = observer(function Exchange(): JSX.Element {
                   value={bottomInputValue ? bottomInputValue : ""}
                 />
               </div>
-              <p>{`Balance: ${
-                ExchangeModel.activeAccounts?.bottom &&
-                ExchangeModel.formatCurrency(
-                  ExchangeModel.activeAccounts?.bottom?.balance,
-                  ExchangeModel.activeAccounts?.bottom?.currency,
-                )
-              }`}</p>
+              <div>
+                <p>{`Balance: ${
+                  ExchangeModel.activeAccounts?.bottom &&
+                  ExchangeModel.formatCurrency(
+                    ExchangeModel.activeAccounts?.bottom?.balance,
+                    ExchangeModel.activeAccounts?.bottom?.currency,
+                  )
+                }`}</p>
+                ------
+                <p>
+                  Rate:{" "}
+                  {ExchangeModel.activeAccounts?.bottom &&
+                    `${ExchangeModel.formatCurrency(
+                      1,
+                      ExchangeModel.activeAccounts?.bottom?.currency,
+                    )} = ${
+                      ExchangeModel.activeAccounts?.top?.currency
+                    } ${ExchangeModel.convertCurrency(1, {
+                      from:
+                        ExchangeModel.activeAccounts?.bottom?.currency || "",
+                      to: ExchangeModel.activeAccounts?.top?.currency || "",
+                    })}`}
+                </p>
+              </div>
             </div>
           </div>
           <button
