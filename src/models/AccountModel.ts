@@ -14,7 +14,7 @@ export class AccountModel {
       balance: observable,
       updateBalance: action,
     });
-    // persistStore(this, ["id", "currency", "balance"], "AccountModel");
+    // persistStore(this, ["currency", "balance"], "AccountModel");
   }
 
   public updateBalance = (balance: number): void => {

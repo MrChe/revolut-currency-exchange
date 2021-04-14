@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../models/connect";
 
@@ -6,6 +6,12 @@ import styles from "./Exchage.module.scss";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
   const { ExchangeModel } = useStore();
+
+  useEffect(() => {
+    if (ExchangeModel.accounts.length === 0) {
+      ExchangeModel.getLatestRates();
+    }
+  }, [ExchangeModel.accounts]);
 
   const [topInputValue, setTopInputValue] = useState<string | number | null>(
     null,
@@ -89,7 +95,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   console.log("activeAccounts", ExchangeModel?.activeAccounts);
   return (
     <div className={styles.ExchangePage}>
-      {ExchangeModel.activeAccounts && (
+      {ExchangeModel.activeAccounts ? (
         <div className={styles.container}>
           <div className={styles.wrapper}>
             <div>
@@ -195,6 +201,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
             Ecxchange
           </button>
         </div>
+      ) : (
+        <div>Loading...</div>
       )}
     </div>
   );

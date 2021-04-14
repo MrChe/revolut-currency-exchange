@@ -32,7 +32,7 @@ export class ActiveAccounts {
 
 export class ExchangeModel {
   private readonly rootModel: RootModel;
-  // public ratesData: IRates | null;
+  public ratesData: IRates | null;
   public cashify: Cashify;
   public accounts: AccountModel[];
   public activeAccounts: ActiveAccounts | null;
@@ -40,36 +40,25 @@ export class ExchangeModel {
     this.rootModel = rootModel;
     this.accounts = [];
     this.activeAccounts = null;
-    // this.ratesData = null;
+    this.ratesData = null;
     this.cashify = new Cashify({});
     makeAutoObservable(this, {
       accounts: observable,
       activeAccounts: observable,
-      // cashify: observable,
-      // ratesData: observable,
+      ratesData: observable,
       convertCurrency: action,
       setActiveAccounts: action,
-      // formatCurrency: action,
-      // setAccounts: action,
-      // findAccountByCurrency: action,
-      // getLatestRates: action,
-      // initCashify: action,
-      // exchange: action,
     });
     // persistStore(
     //   this,
-    //   [
-    //     "accounts",
-    //     "activeAccounts",
-    //     // "ratesData"
-    //   ],
+    //   ["accounts", "ratesData", "activeAccounts"],
     //   "ExchangeModel",
     // );
   }
 
-  // public setRatesData = (ratesData: IRates): void => {
-  //   this.ratesData = ratesData;
-  // };
+  public setRatesData = (ratesData: IRates): void => {
+    this.ratesData = ratesData;
+  };
 
   public initCashify = (ratesData: IRates): void => {
     this.cashify = new Cashify({
@@ -112,6 +101,7 @@ export class ExchangeModel {
     try {
       const data = await this.rootModel.ApiModel.getLatestRatesRequest();
       if (data) {
+        this.setRatesData(data);
         this.initCashify(data);
         this.setAccounts(data);
         this.setActiveAccounts({
@@ -128,6 +118,7 @@ export class ExchangeModel {
     amount: number | string,
     options?: Partial<Options>,
   ): number => {
+    console.log("CASHIFY", this.cashify);
     return Number(this.cashify.convert(amount, options).toFixed(2));
   };
 
