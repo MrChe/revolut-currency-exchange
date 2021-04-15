@@ -3,6 +3,7 @@ import { hot } from "react-hot-loader/root";
 import { MobxProvider } from "./models/connect";
 import { ApplicationRouter } from "./router/router";
 import { configure } from "mobx";
+import { enableLogging } from "mobx-logger";
 
 import styles from "./App.module.scss";
 
@@ -13,6 +14,14 @@ configure({
   reactionRequiresObservable: true,
   observableRequiresReaction: true,
   disableErrorBoundaries: false,
+});
+
+enableLogging({
+  predicate: () => true,
+  action: true,
+  reaction: true,
+  transaction: true,
+  compute: true,
 });
 
 const App = (): JSX.Element => {

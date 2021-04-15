@@ -1,15 +1,19 @@
 @import '~normalize.css';
 
 :global {
+  * {
+    box-sizing: border-box;
+  };
+
   html,body {
     position: relative;
     height: 100%;
   }
 
   body {
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: Helvetica Neue, Helvetica, Roboto, Arial, sans-serif;
     font-size: 16px;
-    background-color: whitesmoke;
+    background-color: white;
     margin: 0;
     padding: 0;
   }
@@ -17,6 +21,24 @@
   #root {
     position: relative;
     height: 100%;
+  }
+
+  button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    line-height: 1;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: transparent;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    color: white;
+  }
+  p {
+    color: white;
   }
 }
 

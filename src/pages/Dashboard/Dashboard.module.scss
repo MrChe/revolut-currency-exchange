@@ -6,4 +6,19 @@
   flex: 1;
 }
 
+.Preview {
+  position: relative;
+  height: 300px;
+  background: linear-gradient(120deg, rgb(33, 72, 163) 0%, rgb(60, 122, 251) 50%, rgb(42, 103, 228) 95%);
+}
+.Controls {
+  position: relative;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.History {
+  position: relative;
+}
 

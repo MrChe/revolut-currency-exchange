@@ -1,6 +1,6 @@
 import { RootModel } from "./RootModel";
 // import { persistStore } from "../utils/mobx-persist.utils";
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, computed, makeAutoObservable, observable } from "mobx";
 import { AccountModel } from "./AccountModel";
 import { IRates } from "./ExchangeModel";
 // import { ActiveAccounts } from "./ActiveAccountsModel";
@@ -13,11 +13,16 @@ export class DashboardModel {
     this.rootModel = rootModel;
     makeAutoObservable(this, {
       accounts: observable,
-      setActiveAccounts: action,
+      accountsAsArray: computed,
+      // setActiveAccounts: action,
     });
     this.accounts = [];
     this.ratesData = null;
     // persistStore(this, ["dashboard"], "DashboardModel");
+  }
+
+  public get accountsAsArray(): AccountModel[] {
+    return this.accounts.slice();
   }
 
   public setRatesData = (ratesData: IRates): void => {

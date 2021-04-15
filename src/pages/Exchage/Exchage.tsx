@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../models/connect";
+import { Slider } from "../../components/Slider/Slider";
+import cn from "classnames";
+import { useHistory } from "react-router-dom";
 
 import styles from "./Exchage.module.scss";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
   const { ExchangeModel } = useStore();
+
+  const history = useHistory();
 
   // useEffect(() => {
   //   if (ExchangeModel.accounts.length === 0) {
@@ -93,9 +98,55 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   //
   // console.log("accounts", ExchangeModel?.accounts);
   // console.log("activeAccounts", ExchangeModel?.activeAccounts);
+
+  const data = [
+    {
+      id: 1,
+      currency: "USD",
+      balance: 100,
+    },
+    {
+      id: 2,
+      currency: "EUR",
+      balance: 100,
+    },
+    {
+      id: 3,
+      currency: "GBP",
+      balance: 100,
+    },
+    {
+      id: 4,
+      currency: "UAH",
+      balance: 100,
+    },
+  ];
+
+  const handleCancel = () => {
+    history.push("/");
+  };
   return (
-    <div className={styles.ExchangePage}>
-      Exchange
+    <div className={styles.Exchange}>
+      <button onClick={handleCancel}>Cancel</button>
+      <div
+        className={cn({
+          [styles.AccountSection]: true,
+          [styles.Light]: true,
+        })}
+      >
+        <Slider data={data} id={"from_account_slider"} />
+      </div>
+      <div className={styles.ExchangeControlDivider}>
+        <button>Exchange</button>
+      </div>
+      <div
+        className={cn({
+          [styles.AccountSection]: true,
+          [styles.Dark]: true,
+        })}
+      >
+        <Slider data={data} id={"to_account_slider"} />
+      </div>
       {/*{ExchangeModel.activeAccounts ? (*/}
       {/*  <div className={styles.container}>*/}
       {/*    <div className={styles.wrapper}>*/}
