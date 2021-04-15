@@ -1,6 +1,5 @@
 import { action, makeAutoObservable, observable } from "mobx";
 import { v4 as uuidv4 } from "uuid";
-import { persistStore } from "../utils/mobx-persist.utils";
 
 export class AccountModel {
   public id: string;
@@ -18,7 +17,6 @@ export class AccountModel {
       balance: observable,
       updateBalance: action,
     });
-    persistStore(this, ["id", "currency", "balance"], "AccountsModel");
   }
 
   public updateBalance = (balance: number): void => {
