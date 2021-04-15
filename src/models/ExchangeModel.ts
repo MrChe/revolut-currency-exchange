@@ -3,9 +3,8 @@ import { action, makeAutoObservable, observable } from "mobx";
 import { Cashify } from "cashify";
 import { Options } from "cashify/dist/lib/options";
 import currencyJS from "currency.js";
-import { AccountModel } from "../models/AccountModel";
+// import { AccountModel } from "../models/AccountModel";
 import getSymbolFromCurrency from "currency-symbol-map";
-// import { ActiveAccounts } from "./ActiveAccountsModel";
 // import { persistStore } from "../utils/mobx-persist.utils";
 
 export interface IRates {
@@ -17,20 +16,22 @@ export interface IRates {
 }
 
 export class ExchangeModel {
-  private readonly rootModel: RootModel;
-  public ratesData: IRates | null;
+  rootModel: RootModel;
+  // public ratesData: IRates | null;
   public cashify: Cashify | null;
-  public accounts: AccountModel[];
+  // public accounts: AccountModel[];
   constructor(rootModel: RootModel) {
-    this.rootModel = rootModel;
-    this.accounts = [];
-    this.ratesData = null;
-    this.cashify = null;
     makeAutoObservable(this, {
-      accounts: observable,
-      ratesData: observable,
+      rootModel: false,
+      // accounts: observable,
+      // ratesData: observable,
       convertCurrency: action,
     });
+    this.rootModel = rootModel;
+    // this.accounts = [];
+    // this.ratesData = null;
+    this.cashify = null;
+
     // persistStore(
     //   this,
     //   ["accounts", "ratesData", "activeAccounts"],
@@ -38,9 +39,9 @@ export class ExchangeModel {
     // );
   }
 
-  public setRatesData = (ratesData: IRates): void => {
-    this.ratesData = ratesData;
-  };
+  // public setRatesData = (ratesData: IRates): void => {
+  //   this.ratesData = ratesData;
+  // };
 
   public initCashify = (ratesData: IRates): void => {
     this.cashify = new Cashify({

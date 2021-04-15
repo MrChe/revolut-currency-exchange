@@ -12,12 +12,6 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
   const history = useHistory();
   const { AccountsModel } = useStore();
 
-  useEffect(() => {
-    if (AccountsModel.accounts.length === 0) {
-      AccountsModel.getLatestRates();
-    }
-  }, [AccountsModel.accounts.length]);
-
   const handleSlideChange = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {

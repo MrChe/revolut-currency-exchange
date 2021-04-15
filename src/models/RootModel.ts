@@ -2,13 +2,18 @@ import { ExchangeModel } from "./ExchangeModel";
 import { AccountsModel } from "./AccountsModel";
 import { ApiModel } from "./ApiModel";
 
-export class RootModel {
+class RootModel {
   public ExchangeModel: ExchangeModel;
   public AccountsModel: AccountsModel;
   public ApiModel: ApiModel;
   constructor() {
     this.ApiModel = new ApiModel();
-    this.AccountsModel = new AccountsModel(this);
+    // init accounts
+    this.AccountsModel = new AccountsModel(
+      this,
+      ["USD", "EUR", "GBP", "UAH"],
+      "USD",
+    );
     this.ExchangeModel = new ExchangeModel(this);
   }
 }

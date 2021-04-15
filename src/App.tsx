@@ -4,6 +4,7 @@ import { MobxProvider } from "./models/connect";
 import { ApplicationRouter } from "./router/router";
 import { configure } from "mobx";
 import { enableLogging } from "mobx-logger";
+import { rootModel } from "./models/RootModel";
 
 import styles from "./App.module.scss";
 
@@ -27,7 +28,7 @@ enableLogging({
 const App = (): JSX.Element => {
   return (
     <div className={styles.App}>
-      <MobxProvider>
+      <MobxProvider value={rootModel}>
         <ApplicationRouter />
       </MobxProvider>
     </div>
