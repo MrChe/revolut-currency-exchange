@@ -54,6 +54,7 @@
     "mobx-persist-store": "^0.5.30",
     "mobx-react-lite": "^3.2.0",
     "node-sass": "^5.0.0",
+    "normalize.css": "^8.0.1",
     "postcss": "^8.2.10",
     "postcss-loader": "^5.2.0",
     "postcss-preset-env": "^6.7.0",

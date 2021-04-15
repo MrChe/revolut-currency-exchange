@@ -23,16 +23,7 @@ module.exports = merge(commonConfig, {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: [
-          { loader: MiniCssExtractPlugin.loader },
-          {
-            loader: "css-loader",
-          },
-        ],
-      },
-      {
-        test: /\.module\.s(a|c)ss$/,
+        test: /\.s?css$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           {
@@ -40,6 +31,8 @@ module.exports = merge(commonConfig, {
             options: {
               sourceMap: true,
               modules: {
+                exportGlobals: true,
+                auto: true,
                 compileType: "module",
                 localIdentName: "[name]-[hash:base64:8]",
               },
@@ -57,20 +50,6 @@ module.exports = merge(commonConfig, {
               },
             },
           },
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
-        ],
-      },
-      {
-        test: /\.s(a|c)ss$/,
-        exclude: /\.module.(s(a|c)ss)$/,
-        use: [
-          { loader: MiniCssExtractPlugin.loader },
-          { loader: "css-loader" },
           {
             loader: "sass-loader",
             options: {

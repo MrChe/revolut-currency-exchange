@@ -1,17 +1,9 @@
-
-
 .Dashboard {
   position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-:global {
-  .swiper-container {
-    width: 500px;
-  }
-
-  .swiper-wrapper {
-    padding-inline-start: 0;
-    list-style-type: none;
-  }
-}
 
