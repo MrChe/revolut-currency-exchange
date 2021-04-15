@@ -1,28 +1,39 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation, Pagination, EffectCube } from "swiper";
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  EffectCube,
+  HashNavigation,
+} from "swiper";
+import SwiperClass from "swiper/types/swiper-class";
+import { observer } from "mobx-react-lite";
 import getSymbolFromCurrency from "currency-symbol-map";
+
 import "swiper/swiper-bundle.min.css";
 import "swiper/components/navigation/navigation.min.css";
 import "swiper/components/pagination/pagination.min.css";
 import "swiper/components/scrollbar/scrollbar.min.css";
-import { observer } from "mobx-react-lite";
+
 import styles from "./Slider.module.scss";
 
 // install Swiper modules
-SwiperCore.use([Navigation, Pagination, EffectCube]);
+SwiperCore.use([Navigation, Pagination, HashNavigation, EffectCube]);
 
 interface ISliderProps {
   data: any[];
   id: string;
+  hashNavigation?: boolean;
+  onSlideChange?: (swiper: SwiperClass) => void;
+  onSwiper?: (swiper: SwiperClass) => void;
 }
 
 export const Slider = observer(
   (props: ISliderProps): JSX.Element => {
-    console.log("DATA", props.data);
     return (
       <div className={styles.Slider}>
         <Swiper
+          hashNavigation={props.hashNavigation}
           id={props.id}
           tag={"section"}
           wrapperTag={"ul"}
@@ -32,20 +43,17 @@ export const Slider = observer(
           pagination={{ clickable: true }}
           spaceBetween={0}
           slidesPerView={1}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={(swiper) =>
-            console.log("slide change:", swiper.activeIndex)
-          }
-          onReachEnd={() => console.log("slides end")}
+          onSwiper={props.onSwiper}
+          onSlideChange={props.onSlideChange}
         >
-          {props.data.map((account, index) => {
-            console.log("ACCOUNT", account);
+          {props.data.map((account) => {
             return (
-              <SwiperSlide tag={"li"} key={account.id}>
-                <h3>
-                  {getSymbolFromCurrency(account.currency)} {account.balance}
-                </h3>
-                <p>{account.currency}</p>
+              <SwiperSlide tag={"li"} key={account.id} data-hash={account.id}>
+                <h3>{account.currency}</h3>
+                <p>
+                  You have: {getSymbolFromCurrency(account.currency)}{" "}
+                  {account.balance}
+                </p>
               </SwiperSlide>
             );
           })}

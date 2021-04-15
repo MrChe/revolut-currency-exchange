@@ -12,7 +12,7 @@ export const ApplicationRouter = observer(
           <Route path="/" exact>
             <Dashboard />
           </Route>
-          <Route path="/exchange" exact>
+          <Route path="/exchange">
             <Exchange />
           </Route>
         </Switch>

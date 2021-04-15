@@ -6,9 +6,10 @@ import cn from "classnames";
 import { useHistory } from "react-router-dom";
 
 import styles from "./Exchage.module.scss";
+import SwiperClass from "swiper/types/swiper-class";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
-  const { ExchangeModel } = useStore();
+  const { ExchangeModel, AccountsModel } = useStore();
 
   const history = useHistory();
 
@@ -99,33 +100,27 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   // console.log("accounts", ExchangeModel?.accounts);
   // console.log("activeAccounts", ExchangeModel?.activeAccounts);
 
-  const data = [
-    {
-      id: 1,
-      currency: "USD",
-      balance: 100,
-    },
-    {
-      id: 2,
-      currency: "EUR",
-      balance: 100,
-    },
-    {
-      id: 3,
-      currency: "GBP",
-      balance: 100,
-    },
-    {
-      id: 4,
-      currency: "UAH",
-      balance: 100,
-    },
-  ];
-
   const handleCancel = () => {
     history.push("/");
   };
-  return (
+
+  const handleChangeSlideFrom = (swiper: SwiperClass) => {
+    console.log("handleChangeSlideFrom", swiper);
+  };
+
+  const handleChangeSlideTo = (swiper: SwiperClass) => {
+    console.log("handleChangeSlideTo", swiper);
+  };
+
+  const onInitSwiperFrom = (swiper: SwiperClass) => {
+    console.log("onInitSwiperFrom", swiper);
+  };
+
+  const onInitSwiperTo = (swiper: SwiperClass) => {
+    console.log("onInitSwiperTo", swiper);
+  };
+
+  return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Exchange}>
       <button onClick={handleCancel}>Cancel</button>
       <div
@@ -134,7 +129,13 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           [styles.Light]: true,
         })}
       >
-        <Slider data={data} id={"from_account_slider"} />
+        <Slider
+          hashNavigation={true}
+          data={AccountsModel.accountsAsArray}
+          id={"from_account_slider"}
+          onSlideChange={handleChangeSlideFrom}
+          onSwiper={onInitSwiperFrom}
+        />
       </div>
       <div className={styles.ExchangeControlDivider}>
         <button>Exchange</button>
@@ -145,7 +146,12 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           [styles.Dark]: true,
         })}
       >
-        <Slider data={data} id={"to_account_slider"} />
+        <Slider
+          data={AccountsModel.accountsAsArray}
+          id={"to_account_slider"}
+          onSlideChange={handleChangeSlideTo}
+          onSwiper={onInitSwiperTo}
+        />
       </div>
       {/*{ExchangeModel.activeAccounts ? (*/}
       {/*  <div className={styles.container}>*/}
@@ -256,5 +262,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
       {/*  <div>Loading...</div>*/}
       {/*)}*/}
     </div>
+  ) : (
+    <div>Loading...</div>
   );
 });
