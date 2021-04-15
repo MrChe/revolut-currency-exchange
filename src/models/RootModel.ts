@@ -2,7 +2,7 @@ import { ExchangeModel } from "./ExchangeModel";
 import { AccountsModel } from "./AccountsModel";
 import { ApiModel } from "./ApiModel";
 
-class RootModel {
+export class RootModel {
   public ExchangeModel: ExchangeModel;
   public AccountsModel: AccountsModel;
   public ApiModel: ApiModel;

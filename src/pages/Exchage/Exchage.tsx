@@ -101,11 +101,15 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   // console.log("activeAccounts", ExchangeModel?.activeAccounts);
 
   const handleCancel = () => {
-    history.push("/");
+    history.push(`/dashboard/#${AccountsModel.selectedAccount?.id}`);
   };
 
   const handleChangeSlideFrom = (swiper: SwiperClass) => {
     console.log("handleChangeSlideFrom", swiper);
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    if (slideId) {
+      AccountsModel.setSelectedAccount(slideId);
+    }
   };
 
   const handleChangeSlideTo = (swiper: SwiperClass) => {
@@ -114,6 +118,10 @@ export const Exchange = observer(function Exchange(): JSX.Element {
 
   const onInitSwiperFrom = (swiper: SwiperClass) => {
     console.log("onInitSwiperFrom", swiper);
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    if (slideId) {
+      AccountsModel.setSelectedAccount(slideId);
+    }
   };
 
   const onInitSwiperTo = (swiper: SwiperClass) => {

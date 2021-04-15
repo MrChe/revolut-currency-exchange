@@ -23,14 +23,26 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
     history.push(`/exchange/#${AccountsModel.selectedAccount?.id}`);
   };
 
+  const onInitSwiper = (swiper: SwiperClass) => {
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    if (slideId) {
+      AccountsModel.setSelectedAccount(slideId);
+    }
+  };
+
+  console.log("accounts", AccountsModel.accounts);
+  console.log("selectedAccount", AccountsModel.selectedAccount);
+
   return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Dashboard}>
       <h1>Dashboard</h1>
       <div className={styles.Preview}>
         <Slider
+          hashNavigation={true}
           data={AccountsModel.accountsAsArray}
           id={"dashboard_slider"}
           onSlideChange={handleSlideChange}
+          onSwiper={onInitSwiper}
         />
       </div>
       <div className={styles.Controls}>

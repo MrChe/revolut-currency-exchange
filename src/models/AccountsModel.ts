@@ -1,9 +1,8 @@
 import { RootModel } from "./RootModel";
-// import { persistStore } from "../utils/mobx-persist.utils";
+import { persistStore } from "../utils/mobx-persist.utils";
 import { action, computed, makeAutoObservable, observable } from "mobx";
 import { AccountModel } from "./AccountModel";
 import { IRates } from "./ExchangeModel";
-// import { ActiveAccounts } from "./ActiveAccountsModel";
 
 export class AccountsModel {
   rootModel: RootModel;
@@ -12,7 +11,6 @@ export class AccountsModel {
   public selectedAccount: AccountModel | null;
   constructor(rootModel: RootModel, currencies: string[], base: string) {
     makeAutoObservable(this, {
-      rootModel: false,
       accounts: observable,
       selectedAccount: observable,
       accountsAsArray: computed,
@@ -23,7 +21,11 @@ export class AccountsModel {
     this.accounts = [];
     this.ratesData = null;
 
-    // persistStore(this, ["dashboard"], "DashboardModel");
+    persistStore(
+      this,
+      ["accounts", "selectedAccount", "accountsAsArray"],
+      "AccountsModel",
+    );
 
     // INIT Module
     this.init(currencies, base);
