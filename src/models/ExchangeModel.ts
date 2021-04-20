@@ -26,6 +26,7 @@ export class ExchangeModel {
       // accounts: observable,
       // ratesData: observable,
       convertCurrency: action,
+      init: action,
     });
     this.rootModel = rootModel;
     // this.accounts = [];
@@ -43,7 +44,7 @@ export class ExchangeModel {
   //   this.ratesData = ratesData;
   // };
 
-  public initCashify = (ratesData: IRates): void => {
+  public init = (ratesData: IRates): void => {
     this.cashify = new Cashify({
       base: ratesData.base,
       rates: ratesData.rates,

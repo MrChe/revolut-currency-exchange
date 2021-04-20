@@ -4,6 +4,8 @@ import { useStore } from "../../models/connect";
 import { Slider } from "../../components/Slider/Slider";
 import cn from "classnames";
 import { useHistory } from "react-router-dom";
+import { Button } from "../../components/Button/Button";
+import { AccountModel } from "../../models/AccountModel";
 
 import styles from "./Exchage.module.scss";
 import SwiperClass from "swiper/types/swiper-class";
@@ -11,92 +13,96 @@ import SwiperClass from "swiper/types/swiper-class";
 export const Exchange = observer(function Exchange(): JSX.Element {
   const { ExchangeModel, AccountsModel } = useStore();
 
+  const [fromInputValue, setFromInputValue] = useState<number | string>(null);
+  const [toInputValue, setToInputValue] = useState<number | string>(null);
+
+  const [accountFrom, setAccountFrom] = useState<AccountModel | null>(null);
+  const [accountTo, setAccountTo] = useState<AccountModel | null>(null);
+
+  useEffect(() => {
+    if (AccountsModel.accounts.length === 0) {
+      AccountsModel.init();
+    }
+  }, []);
+
   const history = useHistory();
 
-  // useEffect(() => {
-  //   if (ExchangeModel.accounts.length === 0) {
-  //     ExchangeModel.getLatestRates();
-  //   }
-  // }, [ExchangeModel.accounts]);
-  //
-  // const [topInputValue, setTopInputValue] = useState<string | number | null>(
-  //   null,
-  // );
-  // const [bottomInputValue, setBottomInputValue] = useState<
-  //   string | number | null
-  // >(null);
-  //
-  // const handleChangeTopSelect = (
-  //   event: React.ChangeEvent<HTMLSelectElement>,
-  // ) => {
-  //   ExchangeModel.setActiveAccounts({
-  //     ...ExchangeModel.activeAccounts,
-  //     from: ExchangeModel.findAccountByCurrency(event.target.value),
-  //   });
-  //   setBottomInputValue(
-  //     ExchangeModel.convertCurrency(topInputValue ? topInputValue : 0, {
-  //       from: ExchangeModel.activeAccounts?.to?.currency || "",
-  //       to: ExchangeModel.activeAccounts?.from?.currency || "",
-  //     }),
-  //   );
-  // };
-  //
-  // const handleChangeBottomSelect = (
-  //   event: React.ChangeEvent<HTMLSelectElement>,
-  // ) => {
-  //   ExchangeModel.setActiveAccounts({
-  //     ...ExchangeModel.activeAccounts,
-  //     to: ExchangeModel.findAccountByCurrency(event.target.value),
-  //   });
-  //   setTopInputValue(
-  //     ExchangeModel.convertCurrency(bottomInputValue ? bottomInputValue : 0, {
-  //       from: ExchangeModel.activeAccounts?.to?.currency || "",
-  //       to: ExchangeModel.activeAccounts?.from?.currency || "",
-  //     }),
-  //   );
-  // };
-  //
-  // const handleTopChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   const regExp = /^[0-9\b\.]+$/;
-  //
-  //   // if value is not blank, then test the regex
-  //
-  //   if (value === "" || regExp.test(value)) {
-  //     setTopInputValue(value ? value : "");
-  //     setBottomInputValue(
-  //       ExchangeModel.convertCurrency(value ? value : 0, {
-  //         from: ExchangeModel.activeAccounts?.from?.currency || "",
-  //         to: ExchangeModel.activeAccounts?.to?.currency || "",
-  //       }),
-  //     );
-  //   }
-  // };
-  // const handleBottomChangeValue = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  // ) => {
-  //   const value = event.target.value;
-  //   const regExp = /^[0-9\b\.]+$/;
-  //
-  //   // if value is not blank, then test the regex
-  //
-  //   if (value === "" || regExp.test(value)) {
-  //     setBottomInputValue(value ? value : "");
-  //     setTopInputValue(
-  //       ExchangeModel.convertCurrency(value ? value : 0, {
-  //         from: ExchangeModel.activeAccounts?.to?.currency || "",
-  //         to: ExchangeModel.activeAccounts?.from?.currency || "",
-  //       }),
-  //     );
-  //   }
-  // };
-  //
+  useEffect(() => {
+    if (AccountsModel.ratesData) {
+      ExchangeModel.init(AccountsModel.ratesData);
+    }
+  }, [AccountsModel.ratesData]);
+
+  useEffect(() => {
+    if (accountTo && accountFrom && fromInputValue) {
+      setToInputValue(
+        ExchangeModel.convertCurrency(fromInputValue ? fromInputValue : 0, {
+          from: accountFrom.currency || "",
+          to: accountTo.currency || "",
+        }),
+      );
+    }
+  }, [toInputValue, accountFrom]);
+
+  useEffect(() => {
+    if (accountTo && accountFrom && toInputValue) {
+      setFromInputValue(
+        ExchangeModel.convertCurrency(toInputValue ? toInputValue : 0, {
+          from: accountTo.currency || "",
+          to: accountFrom.currency || "",
+        }),
+      );
+    }
+  }, [fromInputValue, accountTo]);
+
+  const handleFromChangeValue = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    const regExp = /^[0-9\b\.]+$/;
+
+    // if value is not blank, then test the regex
+
+    if (value === "" || regExp.test(value)) {
+      console.log("handleFromChangeValue", value);
+      setFromInputValue(value ? value : "");
+      if (accountFrom && accountTo) {
+        setToInputValue(
+          ExchangeModel.convertCurrency(value ? value : 0, {
+            from: accountFrom.currency || "",
+            to: accountTo.currency || "",
+          }),
+        );
+      }
+    }
+  };
+
+  const handleToChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const regExp = /^[0-9\b\.]+$/;
+
+    // if value is not blank, then test the regex
+
+    if (value === "" || regExp.test(value)) {
+      console.log("handleToChangeValue", value);
+      setToInputValue(value ? value : "");
+      if (accountTo && accountFrom) {
+        setFromInputValue(
+          ExchangeModel.convertCurrency(value ? value : 0, {
+            from: accountTo.currency || "",
+            to: accountFrom.currency || "",
+          }),
+        );
+      }
+    }
+  };
+
   // const handleExchange = () => {
   //   if (topInputValue && bottomInputValue) {
   //     ExchangeModel.exchange(Number(topInputValue), Number(bottomInputValue));
   //   }
   // };
-  //
+
   // console.log("accounts", ExchangeModel?.accounts);
   // console.log("activeAccounts", ExchangeModel?.activeAccounts);
 
@@ -105,32 +111,44 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   };
 
   const handleChangeSlideFrom = (swiper: SwiperClass) => {
-    console.log("handleChangeSlideFrom", swiper);
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
       AccountsModel.setSelectedAccount(slideId);
+      setAccountFrom(AccountsModel.getAccountById(slideId));
     }
   };
 
   const handleChangeSlideTo = (swiper: SwiperClass) => {
     console.log("handleChangeSlideTo", swiper);
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    if (slideId) {
+      setAccountTo(AccountsModel.getAccountById(slideId));
+    }
   };
 
   const onInitSwiperFrom = (swiper: SwiperClass) => {
-    console.log("onInitSwiperFrom", swiper);
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
       AccountsModel.setSelectedAccount(slideId);
+      setAccountFrom(AccountsModel.getAccountById(slideId));
     }
   };
 
   const onInitSwiperTo = (swiper: SwiperClass) => {
-    console.log("onInitSwiperTo", swiper);
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    if (slideId) {
+      setAccountTo(AccountsModel.getAccountById(slideId));
+    }
   };
 
   return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Exchange}>
-      <button onClick={handleCancel}>Cancel</button>
+      <div className={styles.HeaderWrapper}>
+        <Button onClick={handleCancel} bg={"white"}>
+          Cancel
+        </Button>
+      </div>
+
       <div
         className={cn({
           [styles.AccountSection]: true,
@@ -138,15 +156,19 @@ export const Exchange = observer(function Exchange(): JSX.Element {
         })}
       >
         <Slider
-          hashNavigation={true}
+          history={true}
           data={AccountsModel.accountsAsArray}
           id={"from_account_slider"}
           onSlideChange={handleChangeSlideFrom}
           onSwiper={onInitSwiperFrom}
+          editMode={true}
+          sign={"-"}
+          onInputChange={handleFromChangeValue}
+          inputValue={fromInputValue ? fromInputValue : ""}
         />
       </div>
       <div className={styles.ExchangeControlDivider}>
-        <button>Exchange</button>
+        <Button bg={"white"}>Exchange</Button>
       </div>
       <div
         className={cn({
@@ -159,6 +181,10 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           id={"to_account_slider"}
           onSlideChange={handleChangeSlideTo}
           onSwiper={onInitSwiperTo}
+          editMode={true}
+          sign={"+"}
+          onInputChange={handleToChangeValue}
+          inputValue={toInputValue ? toInputValue : ""}
         />
       </div>
       {/*{ExchangeModel.activeAccounts ? (*/}

@@ -9,11 +9,7 @@ export class RootModel {
   constructor() {
     this.ApiModel = new ApiModel();
     // init accounts
-    this.AccountsModel = new AccountsModel(
-      this,
-      ["USD", "EUR", "GBP", "UAH"],
-      "USD",
-    );
+    this.AccountsModel = new AccountsModel(this);
     this.ExchangeModel = new ExchangeModel(this);
   }
 }

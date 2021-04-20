@@ -9,7 +9,7 @@ export class AccountsModel {
   public accounts: AccountModel[];
   public ratesData: IRates | null;
   public selectedAccount: AccountModel | null;
-  constructor(rootModel: RootModel, currencies: string[], base: string) {
+  constructor(rootModel: RootModel) {
     this.rootModel = rootModel;
     this.selectedAccount = null;
     this.accounts = [];
@@ -18,12 +18,13 @@ export class AccountsModel {
       // rootModel: false,
       accounts: observable,
       selectedAccount: observable,
+      ratesData: observable,
       accountsAsArray: computed,
       setSelectedAccount: action,
     });
 
     // INIT Module
-    this.init(currencies, base);
+    // this.init();
     // persistStore(
     //   this,
     //   ["accounts", "selectedAccount", "accountsAsArray"],
@@ -31,19 +32,15 @@ export class AccountsModel {
     // );
   }
 
-  private init = async (currencies: string[], base: string): Promise<void> => {
+  public init = async (): Promise<void> => {
     try {
-      if (currencies.length !== 0) {
-        const data = await this.rootModel.ApiModel.getLatestRatesRequest(
-          currencies,
-          base,
-        );
-        if (data) {
-          this.setRatesData(data);
-          this.setAccounts(data);
-        }
-      } else {
-        throw new Error("Please add some currencies like ['USD', 'UAH']");
+      const data = await this.rootModel.ApiModel.getLatestRatesRequest(
+        ["USD", "EUR", "GBP", "UAH"],
+        "USD",
+      );
+      if (data) {
+        this.setRatesData(data);
+        this.setAccounts(data);
       }
     } catch (error) {
       console.error("init", error);

@@ -4,6 +4,7 @@ import SwiperCore, {
   Navigation,
   Pagination,
   EffectCube,
+  History,
   HashNavigation,
 } from "swiper";
 import SwiperClass from "swiper/types/swiper-class";
@@ -18,7 +19,7 @@ import "swiper/components/scrollbar/scrollbar.min.css";
 import styles from "./Slider.module.scss";
 
 // install Swiper modules
-SwiperCore.use([Navigation, Pagination, HashNavigation, EffectCube]);
+SwiperCore.use([Navigation, Pagination, EffectCube, HashNavigation]);
 
 interface ISliderProps {
   data: any[];
@@ -26,6 +27,11 @@ interface ISliderProps {
   hashNavigation?: boolean;
   onSlideChange?: (swiper: SwiperClass) => void;
   onSwiper?: (swiper: SwiperClass) => void;
+  onInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  inputDisabled?: boolean;
+  editMode?: boolean;
+  sign?: "-" | "+";
+  inputValue?: string;
 }
 
 export const Slider = observer(
@@ -37,10 +43,10 @@ export const Slider = observer(
           id={props.id}
           tag={"section"}
           wrapperTag={"ul"}
-          effect="cube"
+          // effect="cube"
           centeredSlides
-          navigation
-          pagination={{ clickable: true }}
+          navigation={false}
+          pagination={true}
           spaceBetween={0}
           slidesPerView={1}
           onSwiper={props.onSwiper}
@@ -49,15 +55,31 @@ export const Slider = observer(
           {props.data.map((account) => {
             return (
               <SwiperSlide tag={"li"} key={account.id} data-hash={account.id}>
-                <h3>{account.currency}</h3>
-                <p>
-                  You have: {getSymbolFromCurrency(account.currency)}{" "}
-                  {account.balance}
-                </p>
+                <div className={styles.SwiperSlideWrapper}>
+                  <div className={styles.CurrencyInformation}>
+                    <h3>{account.currency}</h3>
+                    <p>
+                      You have: {getSymbolFromCurrency(account.currency)}{" "}
+                      {account.balance}
+                    </p>
+                  </div>
+                </div>
               </SwiperSlide>
             );
           })}
         </Swiper>
+        {props.editMode && (
+          <div className={styles.InputWrapper}>
+            <span className={styles.Sign}>{props.sign}</span>
+            <input
+              className={styles.Input}
+              type="text"
+              value={props.inputValue}
+              onChange={props.onInputChange}
+              disabled={props.inputDisabled}
+            />
+          </div>
+        )}
       </div>
     );
   },

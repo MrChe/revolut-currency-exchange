@@ -1,0 +1,29 @@
+import React from "react";
+import cn from "classnames";
+
+import styles from "./Button.modules.scss";
+
+interface IButtonProps {
+  children: JSX.Element | string;
+  disabled?: boolean;
+  onClick: () => void;
+  type?: "circle" | "normal";
+  bg?: "transparent" | "white" | "black";
+}
+
+export const Button = (props: IButtonProps): JSX.Element => {
+  return (
+    <button
+      onClick={props.onClick}
+      disabled={props.disabled}
+      className={cn({
+        [styles.Button]: true,
+        [styles.Circle]: props.type === "circle",
+        [styles.Bg_Type_White]: props.bg === "white",
+        [styles.Bg_Type_Black]: props.bg === "black",
+      })}
+    >
+      {props.children}
+    </button>
+  );
+};

@@ -1,0 +1,26 @@
+.Button {
+  position: relative;
+  background-color: transparent;
+  padding: 8px;
+  line-height: 1;
+  border: 1px solid black;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.Circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.Bg {
+  &_Type {
+    &_White {
+      background-color: white;
+    }
+    &_Black {
+      background-color: white;
+    }
+  }
+}

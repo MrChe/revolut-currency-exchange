@@ -5,12 +5,25 @@ import { Slider } from "../../components/Slider/Slider";
 import { Icon } from "../../components/icons/icons";
 import { useStore } from "../../models/connect";
 import SwiperClass from "swiper/types/swiper-class";
+import { Button } from "../../components/Button/Button";
 
 import styles from "./Dashboard.module.scss";
 
 export const Dashboard = observer(function Dashboard(): JSX.Element {
   const history = useHistory();
-  const { AccountsModel } = useStore();
+  const { AccountsModel, ExchangeModel } = useStore();
+
+  useEffect(() => {
+    if (AccountsModel.accounts.length === 0) {
+      AccountsModel.init();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (AccountsModel.ratesData) {
+      ExchangeModel.init(AccountsModel.ratesData);
+    }
+  }, [AccountsModel.ratesData]);
 
   const handleSlideChange = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
@@ -38,17 +51,18 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
       <h1>Dashboard</h1>
       <div className={styles.Preview}>
         <Slider
-          hashNavigation={true}
+          history={true}
           data={AccountsModel.accountsAsArray}
           id={"dashboard_slider"}
           onSlideChange={handleSlideChange}
           onSwiper={onInitSwiper}
+          editMode={false}
         />
       </div>
       <div className={styles.Controls}>
-        <button onClick={goToExchange}>
+        <Button onClick={goToExchange} type={"circle"}>
           <Icon.Exchange />
-        </button>
+        </Button>
       </div>
       <div className={styles.History}>History</div>
     </div>

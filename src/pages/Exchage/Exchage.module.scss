@@ -3,9 +3,17 @@
   height: 100%;
 }
 
+.HeaderWrapper {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
 .AccountSection {
   position: relative;
   height: 50%;
+  width: 100%;
   padding: 50px;
 }
 
