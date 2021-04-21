@@ -24,7 +24,7 @@
   button {
     background-color: white;
     svg {
-      fill: blue;
+      fill: rgb(60, 122, 251);
     }
   }
 }
@@ -43,7 +43,7 @@
 }
 .HistoryListItem {
   position: relative;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(74, 71, 84);;
 }
 .HistoryWrapper {
   position: relative;
@@ -53,14 +53,35 @@
 }
 .HistoryLeftPart {
   position: relative;
-  p {
-    color: black;
-  }
 }
 .HistoryRightPart {
   position: relative;
-  p {
-    color: black;
-  }
 }
 
+.HistoryCurrencyName {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(74, 71, 84);
+}
+
+.HistoryTime {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.BigCurrency {
+  position: relative;
+  font-size: 22px;
+  font-weight: bold;
+  color: rgb(9, 9, 9);
+}
+
+.SmallCurrency {
+  position: relative;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(104, 133, 193);
+}

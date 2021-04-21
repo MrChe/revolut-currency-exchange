@@ -85,6 +85,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
 
   const handleExchange = () => {
     AccountsModel.exchange();
+    AccountsModel.updateInputToValue("");
+    AccountsModel.updateInputFromValue("");
     history.push(`/dashboard/#${AccountsModel.activeAccountFrom?.id}`);
   };
 
@@ -147,6 +149,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           sign={"-"}
           onInputChange={handleFromChangeValue}
           inputValue={AccountsModel.inputFromValue}
+          autoFocus={true}
         />
       </div>
       <div className={styles.ExchangeControlDivider}>

@@ -126,16 +126,19 @@ export class AccountsModel {
   };
 
   public exchange = (): void => {
-    const value = Number(this.inputFromValue);
     this.activeAccountFrom?.updateBalance(
-      this.activeAccountFrom?.balance - value,
+      this.activeAccountFrom?.balance - Number(this.inputFromValue),
     );
+
+    // from: - ₴1.00
+    //
+    // to: + €0.03
 
     this.activeAccountFrom?.updateHistory({
       name: `Exchange to ${this.activeAccountTo?.currency}`,
       from: `- ${this.formatCurrency(
         this.inputFromValue,
-        this.activeAccountFrom?.currency,
+        this.activeAccountFrom?.currency || "",
       )}`,
       to: `+ ${this.formatCurrency(
         this.inputToValue,
@@ -143,17 +146,23 @@ export class AccountsModel {
       )}`,
     });
 
-    this.activeAccountTo?.updateBalance(this.activeAccountTo?.balance + value);
+    this.activeAccountTo?.updateBalance(
+      this.activeAccountTo?.balance + Number(this.inputToValue),
+    );
+
+    // from: - ₴1.00
+    //
+    // to: + €0.03
 
     this.activeAccountTo?.updateHistory({
       name: `Exchange from ${this.activeAccountFrom?.currency}`,
-      from: `- ${this.formatCurrency(
+      from: `+ ${this.formatCurrency(
         this.inputToValue,
-        this.activeAccountFrom?.currency || "",
+        this.activeAccountTo?.currency || "",
       )}`,
-      to: `+ ${this.formatCurrency(
+      to: `- ${this.formatCurrency(
         this.inputFromValue,
-        this.activeAccountTo?.currency,
+        this.activeAccountFrom?.currency || "",
       )}`,
     });
   };

@@ -30,6 +30,7 @@ interface ISliderProps {
   editMode?: boolean;
   sign?: "-" | "+";
   inputValue?: string | number | undefined;
+  autoFocus?: boolean;
 }
 
 export const Slider = (props: ISliderProps): JSX.Element => {
@@ -75,6 +76,7 @@ export const Slider = (props: ISliderProps): JSX.Element => {
             value={props.inputValue}
             onChange={props.onInputChange}
             disabled={props.inputDisabled}
+            autoFocus={props.autoFocus}
           />
         </div>
       )}

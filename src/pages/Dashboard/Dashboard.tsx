@@ -68,12 +68,12 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
                   <li key={h.id} className={styles.HistoryListItem}>
                     <div className={styles.HistoryWrapper}>
                       <div className={styles.HistoryLeftPart}>
-                        <p>name: {h.name}</p>
-                        <p>time: {h.time}</p>
+                        <p className={styles.HistoryCurrencyName}>{h.name}</p>
+                        <p className={styles.HistoryTime}>{h.time}</p>
                       </div>
                       <div className={styles.HistoryRightPart}>
-                        <p>from: {h.from}</p>
-                        <p>to: {h.to}</p>
+                        <p className={styles.BigCurrency}>{h.from}</p>
+                        <p className={styles.SmallCurrency}>{h.to}</p>
                       </div>
                     </div>
                   </li>
