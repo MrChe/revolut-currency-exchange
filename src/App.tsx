@@ -5,6 +5,7 @@ import { ApplicationRouter } from "./router/router";
 import { configure } from "mobx";
 import { enableLogging } from "mobx-logger";
 import { rootModel } from "./models/RootModel";
+import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 
 import styles from "./App.module.scss";
 
@@ -25,11 +26,29 @@ import styles from "./App.module.scss";
 //   compute: true,
 // });
 
+const ErrorFallback = (props: FallbackProps): JSX.Element => {
+  const { error, resetErrorBoundary } = props;
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+};
+
 const App = (): JSX.Element => {
   return (
     <div className={styles.App}>
       <MobxProvider value={rootModel}>
-        <ApplicationRouter />
+        <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          onReset={() => {
+            // reset the state of your app so the error doesn't happen again
+          }}
+        >
+          <ApplicationRouter />
+        </ErrorBoundary>
       </MobxProvider>
     </div>
   );

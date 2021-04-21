@@ -47,14 +47,6 @@ export class AccountsModel {
       updateInputToValue: action,
       isDisableExchange: computed,
     });
-
-    // INIT Module
-    // this.init();
-    // persistStore(
-    //   this,
-    //   ["accounts", "selectedAccount", "accountsAsArray"],
-    //   "AccountsModel",
-    // );
   }
 
   public init = async (): Promise<void> => {
@@ -182,4 +174,14 @@ export class AccountsModel {
       Number(this.inputToValue) > Number(this.activeAccountTo?.balance)
     );
   }
+
+  public clearModel = (): void => {
+    this.accounts = [];
+    this.ratesData = null;
+    this.cashify = null;
+    this.inputToValue = "";
+    this.inputFromValue = "";
+    this.activeAccountFrom = null;
+    this.activeAccountTo = null;
+  };
 }

@@ -1,23 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../models/connect";
 import { Slider } from "../../components/Slider/Slider";
 import cn from "classnames";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
+// import { AccountModel } from "../../models/AccountModel";
+import SwiperClass from "swiper/types/swiper-class";
 
 import styles from "./Exchage.module.scss";
-import SwiperClass from "swiper/types/swiper-class";
-import { AccountModel } from "../../models/AccountModel";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
   const { AccountsModel } = useStore();
-
-  // useEffect(() => {
-  //   if (AccountsModel.accounts.length === 0) {
-  //     AccountsModel.init();
-  //   }
-  // }, []);
 
   const history = useHistory();
 
@@ -129,7 +123,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   };
 
   console.log("accounts", AccountsModel.accountsAsArray);
-  return AccountsModel.accountsAsArray.length !== 0 ? (
+  return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Exchange}>
       <div className={styles.HeaderWrapper}>
         <Button onClick={handleCancel} bg={"white"}>
