@@ -8,6 +8,7 @@ import { Button } from "../../components/Button/Button";
 
 import styles from "./Exchage.module.scss";
 import SwiperClass from "swiper/types/swiper-class";
+import { AccountModel } from "../../models/AccountModel";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
   const { AccountsModel } = useStore();
@@ -21,39 +22,32 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    if (
-      AccountsModel.selectedAccounts?.to &&
-      AccountsModel.selectedAccounts?.from
-    ) {
+    if (AccountsModel.activeAccountTo && AccountsModel.activeAccountFrom) {
       AccountsModel.updateInputToValue(
         AccountsModel.convertCurrency(
           AccountsModel.inputFromValue ? AccountsModel.inputFromValue : 0,
           {
-            from: AccountsModel.selectedAccounts?.from.currency || "",
-            to: AccountsModel.selectedAccounts?.to.currency || "",
+            from: AccountsModel.activeAccountFrom?.currency || "",
+            to: AccountsModel.activeAccountTo?.currency || "",
           },
         ),
       );
     }
-  }, [AccountsModel.selectedAccounts?.from]);
+  }, [AccountsModel.activeAccountFrom]);
 
   useEffect(() => {
-    if (
-      AccountsModel.selectedAccounts?.to &&
-      AccountsModel.selectedAccounts?.from &&
-      AccountsModel.inputToValue
-    ) {
+    if (AccountsModel.activeAccountTo && AccountsModel.activeAccountFrom) {
       AccountsModel.updateInputFromValue(
         AccountsModel.convertCurrency(
           AccountsModel.inputToValue ? AccountsModel.inputToValue : 0,
           {
-            from: AccountsModel.selectedAccounts?.to.currency || "",
-            to: AccountsModel.selectedAccounts?.from.currency || "",
+            from: AccountsModel.activeAccountTo?.currency || "",
+            to: AccountsModel.activeAccountFrom?.currency || "",
           },
         ),
       );
     }
-  }, [AccountsModel.inputFromValue, AccountsModel.selectedAccounts?.to]);
+  }, [AccountsModel.activeAccountTo]);
 
   const handleFromChangeValue = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -64,16 +58,12 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     // if value is not blank, then test the regex
 
     if (value === "" || regExp.test(value)) {
-      console.log("from value", value);
       AccountsModel.updateInputFromValue(value);
-      if (
-        AccountsModel.selectedAccounts?.from &&
-        AccountsModel.selectedAccounts?.to
-      ) {
+      if (AccountsModel.activeAccountFrom && AccountsModel.activeAccountTo) {
         AccountsModel.updateInputToValue(
           AccountsModel.convertCurrency(value ? value : 0, {
-            from: AccountsModel.selectedAccounts?.from.currency || "",
-            to: AccountsModel.selectedAccounts?.to.currency || "",
+            from: AccountsModel.activeAccountFrom?.currency || "",
+            to: AccountsModel.activeAccountTo?.currency || "",
           }),
         );
       }
@@ -87,16 +77,12 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     // if value is not blank, then test the regex
 
     if (value === "" || regExp.test(value)) {
-      console.log("to value", value);
       AccountsModel.updateInputToValue(value);
-      if (
-        AccountsModel.selectedAccounts?.to &&
-        AccountsModel.selectedAccounts?.from
-      ) {
+      if (AccountsModel.activeAccountTo && AccountsModel.activeAccountFrom) {
         AccountsModel.updateInputFromValue(
           AccountsModel.convertCurrency(value ? value : 0, {
-            from: AccountsModel.selectedAccounts?.to.currency || "",
-            to: AccountsModel.selectedAccounts?.from.currency || "",
+            from: AccountsModel.activeAccountTo?.currency || "",
+            to: AccountsModel.activeAccountFrom?.currency || "",
           }),
         );
       }
@@ -108,50 +94,40 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   };
 
   const handleCancel = () => {
-    history.push(`/dashboard/#${AccountsModel.selectedAccounts?.from?.id}`);
+    history.push(`/dashboard/#${AccountsModel.activeAccountFrom?.id}`);
   };
 
   const handleChangeSlideFrom = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccounts({ fromId: slideId });
+      AccountsModel.setActiveAccountFrom(slideId);
     }
-
-    console.log("selectedAccounts", AccountsModel.selectedAccounts);
-    AccountsModel.updateInputToValue(
-      AccountsModel.convertCurrency(
-        AccountsModel.inputFromValue ? AccountsModel.inputFromValue : 0,
-        {
-          from: AccountsModel.selectedAccounts?.from?.currency || "",
-          to: AccountsModel.selectedAccounts?.to?.currency || "",
-        },
-      ),
-    );
   };
 
   const handleChangeSlideTo = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccounts({ toId: slideId });
+      AccountsModel.setActiveAccountTo(slideId);
     }
   };
 
   const onInitSwiperFrom = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccounts({ fromId: slideId });
+      AccountsModel.setActiveAccountFrom(slideId);
     }
   };
 
   const onInitSwiperTo = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccounts({ toId: slideId });
+      AccountsModel.setActiveAccountTo(slideId);
     }
   };
 
   // console.log("accounts", AccountsModel.accounts);
-  console.log("selectedAccounts", AccountsModel.selectedAccounts);
+  console.log("activeAccountTo", AccountsModel.activeAccountTo);
+  console.log("activeAccountFrom", AccountsModel.activeAccountFrom);
 
   return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Exchange}>

@@ -4,6 +4,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   context: resolve(__dirname, "../../src"),
+  entry: "./index.tsx",
+  output: {
+    filename: "js/bundle.[hash].min.js",
+    pathinfo: true,
+    path: resolve(__dirname, "../../dist"),
+    publicPath: "/",
+  },
   module: {
     rules: [
       {

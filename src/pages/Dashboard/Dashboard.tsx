@@ -22,18 +22,18 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
   const handleSlideChange = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccounts({ fromId: slideId });
+      AccountsModel.setActiveAccountFrom(slideId);
     }
   };
 
   const goToExchange = () => {
-    history.push(`/exchange/#${AccountsModel.selectedAccounts?.from?.id}`);
+    history.push(`/exchange/#${AccountsModel.activeAccountFrom?.id}`);
   };
 
   const onInitSwiper = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccounts({ fromId: slideId });
+      AccountsModel.setActiveAccountFrom(slideId);
     }
   };
 

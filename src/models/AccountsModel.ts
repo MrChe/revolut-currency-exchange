@@ -15,46 +15,34 @@ export interface IRates {
   rates: Record<string, number>;
 }
 
-export class SelectedAccounts {
-  public from?: AccountModel | null;
-  public to?: AccountModel | null;
-  constructor(data: SelectedAccounts) {
-    this.from = data.from;
-    this.to = data.to;
-
-    makeAutoObservable(this, {
-      from: observable,
-      to: observable,
-    });
-  }
-}
-
 export class AccountsModel {
   rootModel: RootModel;
   public accounts: AccountModel[];
   public ratesData: IRates | null;
-  public selectedAccounts: SelectedAccounts;
+  public activeAccountFrom: AccountModel | null;
+  public activeAccountTo: AccountModel | null;
   public cashify: Cashify | null;
   public inputFromValue: string | number;
   public inputToValue: string | number;
   constructor(rootModel: RootModel) {
     this.rootModel = rootModel;
-    this.selectedAccounts = new SelectedAccounts({ from: null, to: null });
     this.accounts = [];
     this.ratesData = null;
     this.cashify = null;
     this.inputToValue = "";
     this.inputFromValue = "";
+    this.activeAccountFrom = null;
+    this.activeAccountTo = null;
     makeAutoObservable(this, {
       rootModel: false,
       cashify: false,
       accounts: observable,
-      selectedAccounts: observable,
       inputFromValue: observable,
       inputToValue: observable,
       ratesData: observable,
       accountsAsArray: computed,
-      setSelectedAccounts: action,
+      setActiveAccountTo: action,
+      setActiveAccountFrom: action,
       updateInputFromValue: action,
       updateInputToValue: action,
     });
@@ -91,19 +79,17 @@ export class AccountsModel {
     });
   };
 
-  public setSelectedAccounts = (data: {
-    fromId?: string;
-    toId?: string;
-  }): void => {
-    if (data.fromId) {
-      this.selectedAccounts.from = data.fromId
-        ? this.getAccountById(data.fromId)
-        : null;
+  public setActiveAccountTo = (id: string): void => {
+    const found = this.getAccountById(id);
+    if (found) {
+      this.activeAccountTo = found;
     }
-    if (data.toId) {
-      this.selectedAccounts.to = data.toId
-        ? this.getAccountById(data.toId)
-        : null;
+  };
+
+  public setActiveAccountFrom = (id: string): void => {
+    const found = this.getAccountById(id);
+    if (found) {
+      this.activeAccountFrom = found;
     }
   };
 
@@ -147,12 +133,12 @@ export class AccountsModel {
   };
 
   public exchange = (): void => {
-    this.selectedAccounts?.from?.updateBalance(
-      this.selectedAccounts?.from?.balance - Number(this.inputFromValue),
+    this.activeAccountFrom?.updateBalance(
+      this.activeAccountFrom?.balance - Number(this.inputFromValue),
     );
 
-    this.selectedAccounts?.to?.updateBalance(
-      this.selectedAccounts?.to?.balance + Number(this.inputToValue),
+    this.activeAccountTo?.updateBalance(
+      this.activeAccountTo?.balance + Number(this.inputToValue),
     );
   };
 
