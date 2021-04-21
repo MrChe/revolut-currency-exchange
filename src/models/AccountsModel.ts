@@ -130,10 +130,6 @@ export class AccountsModel {
       this.activeAccountFrom?.balance - Number(this.inputFromValue),
     );
 
-    // from: - ₴1.00
-    //
-    // to: + €0.03
-
     this.activeAccountFrom?.updateHistory({
       name: `Exchange to ${this.activeAccountTo?.currency}`,
       from: `- ${this.formatCurrency(
@@ -149,10 +145,6 @@ export class AccountsModel {
     this.activeAccountTo?.updateBalance(
       this.activeAccountTo?.balance + Number(this.inputToValue),
     );
-
-    // from: - ₴1.00
-    //
-    // to: + €0.03
 
     this.activeAccountTo?.updateHistory({
       name: `Exchange from ${this.activeAccountFrom?.currency}`,
