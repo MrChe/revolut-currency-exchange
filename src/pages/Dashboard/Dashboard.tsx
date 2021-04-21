@@ -11,7 +11,7 @@ import styles from "./Dashboard.module.scss";
 
 export const Dashboard = observer(function Dashboard(): JSX.Element {
   const history = useHistory();
-  const { AccountsModel, ExchangeModel } = useStore();
+  const { AccountsModel } = useStore();
 
   useEffect(() => {
     if (AccountsModel.accounts.length === 0) {
@@ -19,39 +19,33 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
     }
   }, []);
 
-  useEffect(() => {
-    if (AccountsModel.ratesData) {
-      ExchangeModel.init(AccountsModel.ratesData);
-    }
-  }, [AccountsModel.ratesData]);
-
   const handleSlideChange = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccount(slideId);
+      AccountsModel.setSelectedAccounts({ fromId: slideId });
     }
   };
 
   const goToExchange = () => {
-    history.push(`/exchange/#${AccountsModel.selectedAccount?.id}`);
+    history.push(`/exchange/#${AccountsModel.selectedAccounts?.from?.id}`);
   };
 
   const onInitSwiper = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setSelectedAccount(slideId);
+      AccountsModel.setSelectedAccounts({ fromId: slideId });
     }
   };
 
-  console.log("accounts", AccountsModel.accounts);
-  console.log("selectedAccount", AccountsModel.selectedAccount);
+  // console.log("accounts", AccountsModel.accounts);
+  // console.log("selectedAccounts", AccountsModel.selectedAccounts);
 
   return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Dashboard}>
       <h1>Dashboard</h1>
       <div className={styles.Preview}>
         <Slider
-          history={true}
+          hashNavigation={true}
           data={AccountsModel.accountsAsArray}
           id={"dashboard_slider"}
           onSlideChange={handleSlideChange}

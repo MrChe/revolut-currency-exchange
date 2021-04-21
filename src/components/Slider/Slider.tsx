@@ -4,7 +4,6 @@ import SwiperCore, {
   Navigation,
   Pagination,
   EffectCube,
-  History,
   HashNavigation,
 } from "swiper";
 import SwiperClass from "swiper/types/swiper-class";
@@ -31,7 +30,7 @@ interface ISliderProps {
   inputDisabled?: boolean;
   editMode?: boolean;
   sign?: "-" | "+";
-  inputValue?: string;
+  inputValue?: string | number | undefined;
 }
 
 export const Slider = observer(
@@ -40,6 +39,7 @@ export const Slider = observer(
       <div className={styles.Slider}>
         <Swiper
           hashNavigation={props.hashNavigation}
+          // history={props.history}
           id={props.id}
           tag={"section"}
           wrapperTag={"ul"}
@@ -54,7 +54,12 @@ export const Slider = observer(
         >
           {props.data.map((account) => {
             return (
-              <SwiperSlide tag={"li"} key={account.id} data-hash={account.id}>
+              <SwiperSlide
+                tag={"li"}
+                key={account.id}
+                data-hash={account.id}
+                // data-history={account.id}
+              >
                 <div className={styles.SwiperSlideWrapper}>
                   <div className={styles.CurrencyInformation}>
                     <h3>{account.currency}</h3>

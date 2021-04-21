@@ -9,21 +9,21 @@ import { rootModel } from "./models/RootModel";
 import styles from "./App.module.scss";
 
 // https://mobx.js.org/configuration.html#configuration-
-configure({
-  enforceActions: "always",
-  computedRequiresReaction: true,
-  reactionRequiresObservable: true,
-  observableRequiresReaction: true,
-  disableErrorBoundaries: false,
-});
-
-enableLogging({
-  predicate: () => true,
-  action: true,
-  reaction: true,
-  transaction: true,
-  compute: true,
-});
+// configure({
+//   enforceActions: "always",
+//   computedRequiresReaction: true,
+//   reactionRequiresObservable: true,
+//   observableRequiresReaction: true,
+//   disableErrorBoundaries: false,
+// });
+//
+// enableLogging({
+//   predicate: () => true,
+//   action: true,
+//   reaction: true,
+//   transaction: true,
+//   compute: true,
+// });
 
 const App = (): JSX.Element => {
   return (

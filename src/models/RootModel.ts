@@ -1,16 +1,13 @@
-import { ExchangeModel } from "./ExchangeModel";
 import { AccountsModel } from "./AccountsModel";
 import { ApiModel } from "./ApiModel";
 
 export class RootModel {
-  public ExchangeModel: ExchangeModel;
   public AccountsModel: AccountsModel;
   public ApiModel: ApiModel;
   constructor() {
     this.ApiModel = new ApiModel();
     // init accounts
     this.AccountsModel = new AccountsModel(this);
-    this.ExchangeModel = new ExchangeModel(this);
   }
 }
 
