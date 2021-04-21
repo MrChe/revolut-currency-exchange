@@ -106,6 +106,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   };
 
   const handleChangeSlideTo = (swiper: SwiperClass) => {
+    console.log("to activeIndex", swiper.slides);
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
       AccountsModel.setActiveAccountTo(slideId);
@@ -113,6 +114,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   };
 
   const onInitSwiperFrom = (swiper: SwiperClass) => {
+    console.log("from activeIndex", swiper.slides);
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
       AccountsModel.setActiveAccountFrom(slideId);
@@ -126,12 +128,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     }
   };
 
-  // console.log("inputFromValue", AccountsModel.inputFromValue);
-  // console.log("inputToValue", AccountsModel.inputToValue);
-  // console.log("activeAccountTo", AccountsModel.activeAccountTo);
-  // console.log("activeAccountFrom", AccountsModel.activeAccountFrom);
-
-  return AccountsModel.accounts.length !== 0 ? (
+  console.log("accounts", AccountsModel.accountsAsArray);
+  return AccountsModel.accountsAsArray.length !== 0 ? (
     <div className={styles.Exchange}>
       <div className={styles.HeaderWrapper}>
         <Button onClick={handleCancel} bg={"white"}>

@@ -39,11 +39,9 @@ export const Slider = observer(
       <div className={styles.Slider}>
         <Swiper
           hashNavigation={props.hashNavigation}
-          // history={props.history}
           id={props.id}
           tag={"section"}
           wrapperTag={"ul"}
-          // effect="cube"
           centeredSlides
           navigation={false}
           pagination={{
@@ -56,12 +54,7 @@ export const Slider = observer(
         >
           {props.data.map((account) => {
             return (
-              <SwiperSlide
-                tag={"li"}
-                key={account.id}
-                data-hash={account.id}
-                // data-history={account.id}
-              >
+              <SwiperSlide tag={"li"} key={account.id} data-hash={account.id}>
                 <div className={styles.SwiperSlideWrapper}>
                   <div className={styles.CurrencyInformation}>
                     <h3>{account.currency}</h3>

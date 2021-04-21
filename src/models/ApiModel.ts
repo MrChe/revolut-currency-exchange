@@ -1,8 +1,8 @@
 import Axios, { AxiosInstance } from "axios";
 
-import { IRates } from "../models/ExchangeModel";
+import { IRates } from "../models/AccountsModel";
 
-const APP_ID = "e285ab8ceb004923b3e423a0d0583915";
+const APP_ID = "1e7b1a94b01b44888d269b7af23c44af";
 
 export class ApiModel {
   private client: AxiosInstance;
