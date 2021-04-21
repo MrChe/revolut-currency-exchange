@@ -6,6 +6,7 @@ import { Icon } from "../../components/icons/icons";
 import { useStore } from "../../models/connect";
 import SwiperClass from "swiper/types/swiper-class";
 import { Button } from "../../components/Button/Button";
+import { AccountHistory } from "../../models/AccountModel";
 
 import styles from "./Dashboard.module.scss";
 
@@ -42,7 +43,6 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
 
   return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Dashboard}>
-      <h1>Dashboard</h1>
       <div className={styles.Preview}>
         <Slider
           hashNavigation={true}
@@ -58,7 +58,31 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
           <Icon.Exchange />
         </Button>
       </div>
-      <div className={styles.History}>History</div>
+
+      <div className={styles.History}>
+        {AccountsModel.activeAccountFrom?.history.length !== 0 && (
+          <ul className={styles.HistoryList}>
+            {AccountsModel.activeAccountFrom?.history.map(
+              (h: AccountHistory) => {
+                return (
+                  <li key={h.id} className={styles.HistoryListItem}>
+                    <div className={styles.HistoryWrapper}>
+                      <div className={styles.HistoryLeftPart}>
+                        <p>name: {h.name}</p>
+                        <p>time: {h.time}</p>
+                      </div>
+                      <div className={styles.HistoryRightPart}>
+                        <p>from: {h.from}</p>
+                        <p>to: {h.to}</p>
+                      </div>
+                    </div>
+                  </li>
+                );
+              },
+            )}
+          </ul>
+        )}
+      </div>
     </div>
   ) : (
     <div>Loading</div>
