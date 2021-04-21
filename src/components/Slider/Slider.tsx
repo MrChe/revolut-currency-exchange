@@ -46,7 +46,9 @@ export const Slider = observer(
           // effect="cube"
           centeredSlides
           navigation={false}
-          pagination={true}
+          pagination={{
+            clickable: true,
+          }}
           spaceBetween={0}
           slidesPerView={1}
           onSwiper={props.onSwiper}

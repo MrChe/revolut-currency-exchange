@@ -44,6 +44,7 @@
     "css-modules-typescript-loader": "^4.0.1",
     "currency-symbol-map": "^5.0.1",
     "currency.js": "^2.0.3",
+    "date-fns": "^2.21.1",
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",

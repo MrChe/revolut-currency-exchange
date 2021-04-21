@@ -45,6 +45,7 @@ export class AccountsModel {
       setActiveAccountFrom: action,
       updateInputFromValue: action,
       updateInputToValue: action,
+      isDisableExchange: computed,
     });
 
     // INIT Module
@@ -133,13 +134,36 @@ export class AccountsModel {
   };
 
   public exchange = (): void => {
+    const value = Number(this.inputFromValue);
     this.activeAccountFrom?.updateBalance(
-      this.activeAccountFrom?.balance - Number(this.inputFromValue),
+      this.activeAccountFrom?.balance - value,
     );
 
-    this.activeAccountTo?.updateBalance(
-      this.activeAccountTo?.balance + Number(this.inputToValue),
-    );
+    this.activeAccountFrom?.updateHistory({
+      name: `Exchange to ${this.activeAccountTo?.currency}`,
+      from: `- ${this.formatCurrency(
+        this.inputFromValue,
+        this.activeAccountFrom?.currency,
+      )}`,
+      to: `+ ${this.formatCurrency(
+        this.inputToValue,
+        this.activeAccountTo?.currency || "",
+      )}`,
+    });
+
+    this.activeAccountTo?.updateBalance(this.activeAccountTo?.balance + value);
+
+    this.activeAccountTo?.updateHistory({
+      name: `Exchange from ${this.activeAccountFrom?.currency}`,
+      from: `- ${this.formatCurrency(
+        this.inputToValue,
+        this.activeAccountFrom?.currency || "",
+      )}`,
+      to: `+ ${this.formatCurrency(
+        this.inputFromValue,
+        this.activeAccountTo?.currency,
+      )}`,
+    });
   };
 
   public updateInputFromValue = (value: string | number): void => {
@@ -149,4 +173,13 @@ export class AccountsModel {
   public updateInputToValue = (value: string | number): void => {
     this.inputToValue = value ? value : "";
   };
+
+  public get isDisableExchange(): boolean {
+    return (
+      (!this.inputFromValue && !this.inputToValue) ||
+      this.activeAccountFrom?.id === this.activeAccountTo?.id ||
+      Number(this.inputFromValue) > Number(this.activeAccountFrom?.balance) ||
+      Number(this.inputToValue) > Number(this.activeAccountTo?.balance)
+    );
+  }
 }

@@ -21,6 +21,7 @@ export const Button = (props: IButtonProps): JSX.Element => {
         [styles.Circle]: props.type === "circle",
         [styles.Bg_Type_White]: props.bg === "white",
         [styles.Bg_Type_Black]: props.bg === "black",
+        [styles.State_Disabled]: props.disabled,
       })}
     >
       {props.children}

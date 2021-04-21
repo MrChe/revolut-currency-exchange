@@ -91,6 +91,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
 
   const handleExchange = () => {
     AccountsModel.exchange();
+    history.push(`/dashboard/#${AccountsModel.activeAccountFrom?.id}`);
   };
 
   const handleCancel = () => {
@@ -125,9 +126,10 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     }
   };
 
-  // console.log("accounts", AccountsModel.accounts);
-  console.log("activeAccountTo", AccountsModel.activeAccountTo);
-  console.log("activeAccountFrom", AccountsModel.activeAccountFrom);
+  // console.log("inputFromValue", AccountsModel.inputFromValue);
+  // console.log("inputToValue", AccountsModel.inputToValue);
+  // console.log("activeAccountTo", AccountsModel.activeAccountTo);
+  // console.log("activeAccountFrom", AccountsModel.activeAccountFrom);
 
   return AccountsModel.accounts.length !== 0 ? (
     <div className={styles.Exchange}>
@@ -156,7 +158,11 @@ export const Exchange = observer(function Exchange(): JSX.Element {
         />
       </div>
       <div className={styles.ExchangeControlDivider}>
-        <Button bg={"white"} onClick={handleExchange}>
+        <Button
+          bg={"white"}
+          onClick={handleExchange}
+          disabled={AccountsModel.isDisableExchange}
+        >
           Exchange
         </Button>
       </div>
@@ -177,114 +183,6 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           inputValue={AccountsModel.inputToValue}
         />
       </div>
-      {/*{ExchangeModel.activeAccounts ? (*/}
-      {/*  <div className={styles.container}>*/}
-      {/*    <div className={styles.wrapper}>*/}
-      {/*      <div>*/}
-      {/*        <div>*/}
-      {/*          <select*/}
-      {/*            name="top_currency"*/}
-      {/*            id="top_currency"*/}
-      {/*            onChange={handleChangeTopSelect}*/}
-      {/*            value={ExchangeModel.activeAccounts.from?.currency}*/}
-      {/*          >*/}
-      {/*            {ExchangeModel.accounts.map((account) => {*/}
-      {/*              if (*/}
-      {/*                account.currency !==*/}
-      {/*                ExchangeModel.activeAccounts?.to?.currency*/}
-      {/*              ) {*/}
-      {/*                return (*/}
-      {/*                  <option key={account.currency} value={account.currency}>*/}
-      {/*                    {account.currency}*/}
-      {/*                  </option>*/}
-      {/*                );*/}
-      {/*              }*/}
-      {/*            })}*/}
-      {/*          </select>*/}
-      {/*          <label htmlFor="top">{`TOP: ${ExchangeModel.activeAccounts.from?.currency}`}</label>*/}
-      {/*          -*/}
-      {/*          <input*/}
-      {/*            type="text"*/}
-      {/*            id="top"*/}
-      {/*            onChange={handleTopChangeValue}*/}
-      {/*            value={topInputValue ? topInputValue : ""}*/}
-      {/*          />*/}
-      {/*        </div>*/}
-      {/*        <p>{`Balance: ${*/}
-      {/*          ExchangeModel.activeAccounts?.from &&*/}
-      {/*          ExchangeModel.formatCurrency(*/}
-      {/*            ExchangeModel.activeAccounts?.from?.balance,*/}
-      {/*            ExchangeModel.activeAccounts?.from?.currency,*/}
-      {/*          )*/}
-      {/*        }`}</p>*/}
-      {/*      </div>*/}
-      {/*      <div>*/}
-      {/*        <div>*/}
-      {/*          <select*/}
-      {/*            name="bottom_currency"*/}
-      {/*            id="bottom_currency"*/}
-      {/*            onChange={handleChangeBottomSelect}*/}
-      {/*            value={ExchangeModel.activeAccounts.to?.currency}*/}
-      {/*          >*/}
-      {/*            {ExchangeModel.accounts.map((account) => {*/}
-      {/*              if (*/}
-      {/*                account.currency !==*/}
-      {/*                ExchangeModel.activeAccounts?.from?.currency*/}
-      {/*              ) {*/}
-      {/*                return (*/}
-      {/*                  <option key={account.currency} value={account.currency}>*/}
-      {/*                    {account.currency}*/}
-      {/*                  </option>*/}
-      {/*                );*/}
-      {/*              }*/}
-      {/*            })}*/}
-      {/*          </select>*/}
-      {/*          <label htmlFor="bottom">*/}
-      {/*            {`BOTTOM: ${ExchangeModel.activeAccounts?.to?.currency}`}*/}
-      {/*          </label>*/}
-      {/*          +*/}
-      {/*          <input*/}
-      {/*            type="text"*/}
-      {/*            id="bottom"*/}
-      {/*            onChange={handleBottomChangeValue}*/}
-      {/*            value={bottomInputValue ? bottomInputValue : ""}*/}
-      {/*          />*/}
-      {/*        </div>*/}
-      {/*        <div>*/}
-      {/*          <p>{`Balance: ${*/}
-      {/*            ExchangeModel.activeAccounts?.to &&*/}
-      {/*            ExchangeModel.formatCurrency(*/}
-      {/*              ExchangeModel.activeAccounts?.to?.balance,*/}
-      {/*              ExchangeModel.activeAccounts?.to?.currency,*/}
-      {/*            )*/}
-      {/*          }`}</p>*/}
-      {/*          ------*/}
-      {/*          <p>*/}
-      {/*            Rate:{" "}*/}
-      {/*            {ExchangeModel.activeAccounts?.to &&*/}
-      {/*              `${ExchangeModel.formatCurrency(*/}
-      {/*                1,*/}
-      {/*                ExchangeModel.activeAccounts?.to?.currency,*/}
-      {/*              )} = ${*/}
-      {/*                ExchangeModel.activeAccounts?.from?.currency*/}
-      {/*              } ${ExchangeModel.convertCurrency(1, {*/}
-      {/*                from: ExchangeModel.activeAccounts?.to?.currency || "",*/}
-      {/*                to: ExchangeModel.activeAccounts?.from?.currency || "",*/}
-      {/*              })}`}*/}
-      {/*          </p>*/}
-      {/*        </div>*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*    <button*/}
-      {/*      onClick={handleExchange}*/}
-      {/*      disabled={!topInputValue && !bottomInputValue}*/}
-      {/*    >*/}
-      {/*      Exchange*/}
-      {/*    </button>*/}
-      {/*  </div>*/}
-      {/*) : (*/}
-      {/*  <div>Loading...</div>*/}
-      {/*)}*/}
     </div>
   ) : (
     <div>Loading...</div>
