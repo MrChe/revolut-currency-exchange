@@ -7,6 +7,7 @@ module.exports = {
   context: resolve(__dirname, "../../src"),
   entry: "./index.tsx",
   output: {
+    filename: "bundle.js",
     path: resolve(__dirname, "../../dist"),
     pathinfo: true,
     publicPath: "/",
@@ -34,9 +35,10 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      hash: true,
+      hash: false,
       filename: "index.html",
-      template: "index.html.ejs",
+      template: "index.html",
+      inject: "body",
       version: packageJSON.version,
       meta: {
         version: packageJSON.version,
@@ -55,10 +57,6 @@ module.exports = {
       },
     }),
   ],
-  externals: {
-    react: "React",
-    "react-dom": "ReactDOM",
-  },
   performance: {
     hints: false,
   },

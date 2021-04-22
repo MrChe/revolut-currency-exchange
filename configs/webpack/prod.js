@@ -1,6 +1,6 @@
 // production config
 const { merge } = require("webpack-merge");
-// const { resolve } = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const commonConfig = require("./common");
@@ -11,8 +11,8 @@ module.exports = merge(commonConfig, {
   devtool: false,
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].[hash].css",
-      chunkFilename: "[id].[hash].css",
+      filename: "[name].css",
+      chunkFilename: "[id].css",
     }),
   ],
   module: {
@@ -53,6 +53,14 @@ module.exports = merge(commonConfig, {
           },
         ],
       },
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        extractComments: false,
+      }),
     ],
   },
 });
