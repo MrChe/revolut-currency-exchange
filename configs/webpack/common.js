@@ -1,15 +1,16 @@
 // shared config (dev and prod)
 const { resolve } = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const packageJSON = require("../../package.json");
 
 module.exports = {
   context: resolve(__dirname, "../../src"),
   entry: "./index.tsx",
   output: {
-    filename: "js/bundle.[hash].min.js",
-    pathinfo: true,
     path: resolve(__dirname, "../../dist"),
+    pathinfo: true,
     publicPath: "/",
+    globalObject: "this",
   },
   module: {
     rules: [
@@ -31,7 +32,29 @@ module.exports = {
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: "index.html.ejs" })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      hash: true,
+      filename: "index.html",
+      template: "index.html.ejs",
+      version: packageJSON.version,
+      meta: {
+        version: packageJSON.version,
+      },
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    }),
+  ],
   externals: {
     react: "React",
     "react-dom": "ReactDOM",
