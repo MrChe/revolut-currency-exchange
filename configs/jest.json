@@ -9,7 +9,7 @@
   },
   "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
   "transformIgnorePatterns": ["/node_modules/"],
-  "testRegex": "/tests/.*\\.(ts|tsx)$",
+  "testRegex": "*.test.(ts|tsx)$",
   "moduleDirectories": ["node_modules"],
   "globals": {
     "DEVELOPMENT": false,
