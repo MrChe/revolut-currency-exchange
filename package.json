@@ -2,7 +2,7 @@
   "name": "revolut-currency-exchange",
   "version": "1.0.0",
   "license": "MIT",
-  "homepage": "https://mrche.github.io/revolut-currency-exchange",
+  "homepage": "https://mrche.github.io/revolut-currency-exchange/",
   "scripts": {
     "build": "NODE_ENV=production yarn run clean-dist && webpack --config=configs/webpack/prod.js",
     "clean-dist": "rimraf dist/*",
@@ -10,9 +10,7 @@
     "start": "yarn run start-dev",
     "start-dev": "NODE_ENV=development webpack serve --config=configs/webpack/dev.js",
     "start-prod": "yarn run build && node express.js",
-    "test": "jest --coverage --watchAll --config=configs/jest.json",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "test": "jest --coverage --watchAll --config=configs/jest.json"
   },
   "devDependencies": {
     "@babel/cli": "7.13.10",
@@ -34,13 +32,16 @@
     "@types/react-router-dom": "5.1.7",
     "@types/uuid": "8.3.0",
     "@typescript-eslint/eslint-plugin": "4.17.0",
-    "@typescript-eslint/parser": "4.17.0",
+    "@typescript-eslint/parser": "4.17.0"
+  },
+  "dependencies": {
     "autoprefixer": "10.2.5",
     "babel-loader": "8.2.2",
     "babel-plugin-macros": "3.0.1",
     "babel-plugin-named-asset-import": "0.3.7",
     "babel-polyfill": "6.26.0",
-    "css-loader": "5.1.2",
+    "babel-preset-minify": "^0.5.1",
+    "css-loader": "5.2.4",
     "css-modules-typescript-loader": "4.0.1",
     "eslint": "7.22.0",
     "eslint-config-prettier": "8.1.0",
@@ -48,11 +49,10 @@
     "eslint-plugin-react": "7.22.0",
     "express": "4.17.1",
     "file-loader": "6.2.0",
-    "gh-pages": "3.1.0",
     "html-webpack-plugin": "5.3.1",
     "image-webpack-loader": "7.0.1",
     "jest": "26.6.3",
-    "mini-css-extract-plugin": "1.4.1",
+    "mini-css-extract-plugin": "1.5.0",
     "mobx-logger": "0.7.1",
     "mobx-react-lite": "3.2.0",
     "node-sass": "5.0.0",
@@ -71,9 +71,7 @@
     "webpack": "5.25.0",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.2",
-    "webpack-merge": "5.7.3"
-  },
-  "dependencies": {
+    "webpack-merge": "5.7.3",
     "axios": "0.21.1",
     "cashify": "2.5.0",
     "classnames": "2.3.1",
