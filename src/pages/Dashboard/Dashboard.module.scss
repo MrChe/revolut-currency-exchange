@@ -15,6 +15,13 @@
   background: linear-gradient(120deg, rgb(33, 72, 163) 0%, rgb(60, 122, 251) 50%, rgb(42, 103, 228) 95%);
   padding: 50px;
 }
+
+.SliderWrapper {
+  position: relative;
+  width: 300px;
+  height: 100%;
+}
+
 .Controls {
   position: absolute;
   top: 50%;
@@ -28,60 +35,10 @@
     }
   }
 }
-.History {
+
+.HistoryWrapper {
   position: relative;
   background-color: white;
   flex: 1;
   padding: 50px;
-}
-
-.HistoryList {
-  position: relative;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-.HistoryListItem {
-  position: relative;
-  border-bottom: 1px solid rgb(74, 71, 84);;
-}
-.HistoryWrapper {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.HistoryLeftPart {
-  position: relative;
-}
-.HistoryRightPart {
-  position: relative;
-}
-
-.HistoryCurrencyName {
-  position: relative;
-  font-size: 16px;
-  font-weight: 500;
-  color: rgb(74, 71, 84);
-}
-
-.HistoryTime {
-  position: relative;
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.5);
-}
-
-.BigCurrency {
-  position: relative;
-  font-size: 22px;
-  font-weight: bold;
-  color: rgb(9, 9, 9);
-}
-
-.SmallCurrency {
-  position: relative;
-  font-size: 14px;
-  font-weight: bold;
-  color: rgb(104, 133, 193);
 }

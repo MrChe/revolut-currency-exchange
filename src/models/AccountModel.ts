@@ -11,7 +11,7 @@ export class AccountHistory {
   constructor(data: Partial<AccountHistory>) {
     this.id = uuidv4();
     this.name = data.name;
-    this.time = format(new Date(), "yyyy-MM-dd HH:mm:ss");
+    this.time = format(new Date(), "dd/MM/yyyy HH:mm");
     this.from = data.from;
     this.to = data.to;
   }

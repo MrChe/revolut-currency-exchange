@@ -1,47 +1,47 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../models/connect";
 import { Slider } from "../../components/Slider/Slider";
 import cn from "classnames";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
-// import { AccountModel } from "../../models/AccountModel";
 import SwiperClass from "swiper/types/swiper-class";
+import { Account } from "../../components/Account/Account";
+import { InputNumber } from "../../components/InputNumber/InputNumber";
 
 import styles from "./Exchage.module.scss";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
-  const { AccountsModel } = useStore();
+  const { ExchangeModel } = useStore();
+
+  const activeAccountTo = ExchangeModel.activeAccountTo;
+  const activeAccountFrom = ExchangeModel.activeAccountFrom;
+  const inputFromValue = ExchangeModel.inputFromValue;
+  const inputToValue = ExchangeModel.inputToValue;
 
   const history = useHistory();
 
   useEffect(() => {
-    if (AccountsModel.activeAccountTo && AccountsModel.activeAccountFrom) {
-      AccountsModel.updateInputToValue(
-        AccountsModel.convertCurrency(
-          AccountsModel.inputFromValue ? AccountsModel.inputFromValue : 0,
-          {
-            from: AccountsModel.activeAccountFrom?.currency || "",
-            to: AccountsModel.activeAccountTo?.currency || "",
-          },
-        ),
+    if (activeAccountTo && activeAccountFrom) {
+      ExchangeModel.updateInputToValue(
+        ExchangeModel.convertCurrency(inputFromValue ? inputFromValue : 0, {
+          from: activeAccountFrom?.currency || "",
+          to: activeAccountTo?.currency || "",
+        }),
       );
     }
-  }, [AccountsModel.activeAccountFrom]);
+  }, [activeAccountFrom]);
 
   useEffect(() => {
-    if (AccountsModel.activeAccountTo && AccountsModel.activeAccountFrom) {
-      AccountsModel.updateInputFromValue(
-        AccountsModel.convertCurrency(
-          AccountsModel.inputToValue ? AccountsModel.inputToValue : 0,
-          {
-            from: AccountsModel.activeAccountTo?.currency || "",
-            to: AccountsModel.activeAccountFrom?.currency || "",
-          },
-        ),
+    if (activeAccountTo && activeAccountFrom) {
+      ExchangeModel.updateInputFromValue(
+        ExchangeModel.convertCurrency(inputToValue ? inputToValue : 0, {
+          from: activeAccountTo?.currency || "",
+          to: activeAccountFrom?.currency || "",
+        }),
       );
     }
-  }, [AccountsModel.activeAccountTo]);
+  }, [activeAccountTo]);
 
   const handleFromChangeValue = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -52,12 +52,12 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     // if value is not blank, then test the regex
 
     if (value === "" || regExp.test(value)) {
-      AccountsModel.updateInputFromValue(value);
-      if (AccountsModel.activeAccountFrom && AccountsModel.activeAccountTo) {
-        AccountsModel.updateInputToValue(
-          AccountsModel.convertCurrency(value ? value : 0, {
-            from: AccountsModel.activeAccountFrom?.currency || "",
-            to: AccountsModel.activeAccountTo?.currency || "",
+      ExchangeModel.updateInputFromValue(value);
+      if (activeAccountFrom && activeAccountTo) {
+        ExchangeModel.updateInputToValue(
+          ExchangeModel.convertCurrency(value ? value : 0, {
+            from: activeAccountFrom?.currency || "",
+            to: activeAccountTo?.currency || "",
           }),
         );
       }
@@ -71,12 +71,12 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     // if value is not blank, then test the regex
 
     if (value === "" || regExp.test(value)) {
-      AccountsModel.updateInputToValue(value);
-      if (AccountsModel.activeAccountTo && AccountsModel.activeAccountFrom) {
-        AccountsModel.updateInputFromValue(
-          AccountsModel.convertCurrency(value ? value : 0, {
-            from: AccountsModel.activeAccountTo?.currency || "",
-            to: AccountsModel.activeAccountFrom?.currency || "",
+      ExchangeModel.updateInputToValue(value);
+      if (activeAccountTo && activeAccountFrom) {
+        ExchangeModel.updateInputFromValue(
+          ExchangeModel.convertCurrency(value ? value : 0, {
+            from: activeAccountTo?.currency || "",
+            to: activeAccountFrom?.currency || "",
           }),
         );
       }
@@ -84,20 +84,20 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   };
 
   const handleExchange = () => {
-    AccountsModel.exchange();
-    AccountsModel.updateInputToValue("");
-    AccountsModel.updateInputFromValue("");
-    history.push(`/dashboard/#${AccountsModel.activeAccountFrom?.id}`);
+    ExchangeModel.exchange();
+    ExchangeModel.updateInputToValue("");
+    ExchangeModel.updateInputFromValue("");
+    history.push(`/dashboard/#${activeAccountFrom?.id}`);
   };
 
   const handleCancel = () => {
-    history.push(`/dashboard/#${AccountsModel.activeAccountFrom?.id}`);
+    history.push(`/dashboard/#${activeAccountFrom?.id}`);
   };
 
   const handleChangeSlideFrom = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setActiveAccountFrom(slideId);
+      ExchangeModel.setActiveAccountFrom(slideId);
     }
   };
 
@@ -105,7 +105,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     console.log("to activeIndex", swiper.slides);
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setActiveAccountTo(slideId);
+      ExchangeModel.setActiveAccountTo(slideId);
     }
   };
 
@@ -113,19 +113,18 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     console.log("from activeIndex", swiper.slides);
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setActiveAccountFrom(slideId);
+      ExchangeModel.setActiveAccountFrom(slideId);
     }
   };
 
   const onInitSwiperTo = (swiper: SwiperClass) => {
     const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
     if (slideId) {
-      AccountsModel.setActiveAccountTo(slideId);
+      ExchangeModel.setActiveAccountTo(slideId);
     }
   };
 
-  console.log("accounts", AccountsModel.accountsAsArray);
-  return AccountsModel.accounts.length !== 0 ? (
+  return ExchangeModel.accountsAsArray.length !== 0 ? (
     <div className={styles.Exchange}>
       <div className={styles.HeaderWrapper}>
         <Button onClick={handleCancel} bg={"white"}>
@@ -139,24 +138,31 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           [styles.Light]: true,
         })}
       >
-        <Slider
-          hashNavigation={true}
-          data={AccountsModel.accountsAsArray}
-          id={"from_account_slider"}
-          onSlideChange={handleChangeSlideFrom}
-          onSwiper={onInitSwiperFrom}
-          editMode={true}
-          sign={"-"}
-          onInputChange={handleFromChangeValue}
-          inputValue={AccountsModel.inputFromValue}
-          autoFocus={true}
-        />
+        <div className={styles.SliderWrapper}>
+          <Slider
+            hashNavigation={true}
+            data={ExchangeModel.accountsAsArray}
+            id={"from_account_slider"}
+            onSlideChange={handleChangeSlideFrom}
+            onSwiper={onInitSwiperFrom}
+          >
+            <Account type={"from"} view={"exchange"} />
+          </Slider>
+        </div>
+        <div className={styles.InputWrapper}>
+          <div className={styles.InputSign}>-</div>
+          <InputNumber
+            onChange={handleFromChangeValue}
+            value={inputFromValue}
+            autoFocus={true}
+          />
+        </div>
       </div>
       <div className={styles.ExchangeControlDivider}>
         <Button
           bg={"white"}
           onClick={handleExchange}
-          disabled={AccountsModel.isDisableExchange}
+          disabled={ExchangeModel.isDisableExchange}
         >
           Exchange
         </Button>
@@ -167,16 +173,21 @@ export const Exchange = observer(function Exchange(): JSX.Element {
           [styles.Dark]: true,
         })}
       >
-        <Slider
-          data={AccountsModel.accountsAsArray}
-          id={"to_account_slider"}
-          onSlideChange={handleChangeSlideTo}
-          onSwiper={onInitSwiperTo}
-          editMode={true}
-          sign={"+"}
-          onInputChange={handleToChangeValue}
-          inputValue={AccountsModel.inputToValue}
-        />
+        <div className={styles.SliderWrapper}>
+          <Slider
+            data={ExchangeModel.accountsAsArray}
+            id={"to_account_slider"}
+            onSlideChange={handleChangeSlideTo}
+            onSwiper={onInitSwiperTo}
+          >
+            <Account type={"to"} view={"exchange"} />
+          </Slider>
+        </div>
+
+        <div className={styles.InputWrapper}>
+          <div className={styles.InputSign}>+</div>
+          <InputNumber onChange={handleToChangeValue} value={inputToValue} />
+        </div>
       </div>
     </div>
   ) : (

@@ -1,4 +1,62 @@
 .Account {
   position: relative;
-  width: 100%;
+}
+
+.View {
+  &_Exchange {
+    .CurrencyTitle {
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .CurrencyText {
+      font-size: 16px;
+    }
+
+    .BalanceText {
+      font-size: 16px;
+    }
+  }
+  &_Preview {
+    .CurrencyTitle {
+      font-size: 40px;
+      font-weight: 500;
+    }
+    .CurrencyText {
+      font-size: 20px;
+    }
+
+    .BalanceText {
+      font-size: 20px;
+    }
+  }
+}
+
+.CurrencyInformation {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.CurrencyTitle {
+  position: relative;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.Wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CurrencyText {
+  position: relative;
+  margin: 0;
+}
+
+.BalanceText {
+  position: relative;
+  margin: 0;
 }

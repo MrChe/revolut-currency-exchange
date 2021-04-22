@@ -1,6 +1,6 @@
 import Axios, { AxiosInstance } from "axios";
 
-import { IRates } from "../models/AccountsModel";
+import { IRates } from "../models/ExchangeModel";
 
 const APP_ID = "1e7b1a94b01b44888d269b7af23c44af";
 
@@ -35,6 +35,21 @@ export class ApiModel {
       return response.data;
     } catch (error) {
       console.error("getLatestRatesRequest", error);
+    }
+  };
+
+  public getCurrenciesRequest = async (): Promise<
+    Record<string, string> | undefined
+  > => {
+    try {
+      const response = await this.client.get(`/currencies.json`, {});
+      if (!response.data) {
+        throw new Error("Not have any data");
+      }
+      console.log("response.data", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("getCurrenciesRequest", error);
     }
   };
 }

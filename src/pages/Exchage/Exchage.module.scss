@@ -10,11 +10,28 @@
   z-index: 10;
 }
 
+.SliderWrapper {
+  position: relative;
+  width: 300px;
+  height: 100%;
+}
+
+.InputWrapper {
+  position: relative;
+}
+
+.InputSign {
+  position: relative;
+}
+
 .AccountSection {
   position: relative;
   height: 50%;
   width: 100%;
   padding: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .Dark {

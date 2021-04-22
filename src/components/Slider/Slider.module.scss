@@ -7,42 +7,6 @@
     align-items: center;
 }
 
-.SwiperSlideWrapper {
-    position: relative;
-}
-
-.CurrencyInformation {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.InputWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.Sign {
-    position: relative;
-    font-size: 50px;
-    color: white;
-    font-weight: 300;
-}
-
-.Input {
-    position: relative;
-    background-color: transparent;
-    height: 100px;
-    caret-color: white;
-    border: none;
-    outline: none;
-    text-align: right;
-    font-size: 50px;
-    color: white;
-    font-weight: 300;
-}
 
 :global {
 

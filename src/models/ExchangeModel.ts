@@ -15,7 +15,7 @@ export interface IRates {
   rates: Record<string, number>;
 }
 
-export class AccountsModel {
+export class ExchangeModel {
   rootModel: RootModel;
   public accounts: AccountModel[];
   public ratesData: IRates | null;
@@ -24,6 +24,7 @@ export class AccountsModel {
   public cashify: Cashify | null;
   public inputFromValue: string | number;
   public inputToValue: string | number;
+  public currencyNames: Record<string, string>;
   constructor(rootModel: RootModel) {
     this.rootModel = rootModel;
     this.accounts = [];
@@ -33,10 +34,12 @@ export class AccountsModel {
     this.inputFromValue = "";
     this.activeAccountFrom = null;
     this.activeAccountTo = null;
+    this.currencyNames = {};
     makeAutoObservable(this, {
       rootModel: false,
       cashify: false,
       accounts: observable,
+      currencyNames: observable,
       inputFromValue: observable,
       inputToValue: observable,
       ratesData: observable,
@@ -45,20 +48,23 @@ export class AccountsModel {
       setActiveAccountFrom: action,
       updateInputFromValue: action,
       updateInputToValue: action,
+      setCurrencyNames: action,
       isDisableExchange: computed,
     });
   }
 
   public init = async (): Promise<void> => {
     try {
-      const data = await this.rootModel.ApiModel.getLatestRatesRequest(
+      const rates = await this.rootModel.ApiModel.getLatestRatesRequest(
         ["USD", "EUR", "GBP", "UAH"],
         "USD",
       );
-      if (data) {
-        this.setRatesData(data);
-        this.setAccounts(data);
-        this.initCachify(data);
+      const currencyNames = await this.rootModel.ApiModel.getCurrenciesRequest();
+      if (rates && currencyNames) {
+        this.setRatesData(rates);
+        this.setAccounts(rates);
+        this.initCachify(rates);
+        this.setCurrencyNames(currencyNames);
       }
     } catch (error) {
       console.error("init", error);
@@ -92,6 +98,10 @@ export class AccountsModel {
 
   public setRatesData = (ratesData: IRates): void => {
     this.ratesData = ratesData;
+  };
+
+  public setCurrencyNames = (currencyNames: Record<string, string>): void => {
+    this.currencyNames = currencyNames;
   };
 
   public setAccounts = (ratesData: IRates): void => {
@@ -178,6 +188,7 @@ export class AccountsModel {
 
   public clearModel = (): void => {
     this.accounts = [];
+    this.currencyNames = {};
     this.ratesData = null;
     this.cashify = null;
     this.inputToValue = "";
