@@ -61,8 +61,6 @@ export class ExchangeModel {
         "activeAccountTo",
         "inputFromValue",
         "inputToValue",
-        "accountsAsArray",
-        "isDisableExchange",
       ],
       "ExchangeModel",
     );
@@ -130,7 +128,6 @@ export class ExchangeModel {
     amount: number | string,
     options?: Partial<Options>,
   ): number => {
-    // console.log("cashify", this.cashify);
     const cashify = this.ratesData
       ? new Cashify({
           base: this.ratesData.base,
@@ -151,7 +148,7 @@ export class ExchangeModel {
 
   public exchange = (): void => {
     if (this.activeAccountFrom && this.activeAccountTo) {
-      this.updateBalanceInAccount(
+      this.updateBalanceFrom(
         this.activeAccountFrom?.id,
         Number(this.inputFromValue),
       );
@@ -168,10 +165,7 @@ export class ExchangeModel {
         )}`,
       });
 
-      this.updateBalanceInAccount(
-        this.activeAccountTo?.id,
-        Number(this.inputToValue),
-      );
+      this.updateBalanceTo(this.activeAccountTo?.id, Number(this.inputToValue));
 
       this.updateHistoryInAccount(this.activeAccountTo.id, {
         name: `Exchange from ${this.activeAccountFrom?.currency}`,
@@ -199,8 +193,7 @@ export class ExchangeModel {
     return (
       (!this.inputFromValue && !this.inputToValue) ||
       this.activeAccountFrom?.id === this.activeAccountTo?.id ||
-      Number(this.inputFromValue) > Number(this.activeAccountFrom?.balance) ||
-      Number(this.inputToValue) > Number(this.activeAccountTo?.balance)
+      Number(this.inputFromValue) > Number(this.activeAccountFrom?.balance)
     );
   }
 
@@ -214,13 +207,17 @@ export class ExchangeModel {
     this.activeAccountTo = null;
   };
 
-  public updateBalanceInAccount = (
-    accountId: string,
-    balance: number,
-  ): void => {
+  public updateBalanceFrom = (accountId: string, value: number): void => {
     const found = this.getAccountById(accountId);
     if (found) {
-      found.balance = found?.balance + Number(balance.toFixed(2));
+      found.balance = found?.balance - Number(value.toFixed(2));
+    }
+  };
+
+  public updateBalanceTo = (accountId: string, value: number): void => {
+    const found = this.getAccountById(accountId);
+    if (found) {
+      found.balance = found?.balance + Number(value.toFixed(2));
     }
   };
 

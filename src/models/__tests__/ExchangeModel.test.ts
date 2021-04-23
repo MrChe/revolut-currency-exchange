@@ -1,206 +1,170 @@
-import { ExchangeModel } from "../ExchangeModel"
 import { RootModel } from "../RootModel";
+import { currencies, ratesData } from "../../../tests/mockData";
+import { beforeEach } from "jest-circus";
 
 describe("ExchangeModel", () => {
-    it("creates new todos", () => {
-        // const rootModel = new RootModel();
-        // const exchangeModel = rootModel.ExchangeModel;
-        // exchangeModel.setRatesData(rates);
-        // exchangeModel.setAccounts(rates);
-        // exchangeModel.initCachify(rates);
-        // exchangeModel.setCurrencyNames(currencyNames);
-        // store.createTodo("todo1")
-        // store.createTodo("todo2")
-        // expect(store.todos.length).toBe(2)
-        // expect(store.todos[0].value).toBe("todo1")
-        // expect(store.todos[1].value).toBe("todo2")
-    })
+  const rootModel = new RootModel();
+  const exchangeModel = rootModel.ExchangeModel;
+  beforeEach(() => {
+    exchangeModel.setRatesData(ratesData);
+    exchangeModel.setAccounts(ratesData);
+    exchangeModel.setCurrencyNames(currencies);
+    exchangeModel.setActiveAccountFrom(exchangeModel.accounts[0].id);
+    exchangeModel.setActiveAccountTo(exchangeModel.accounts[1].id);
+  });
+  it("test updateInputFromValue", () => {
+    expect(exchangeModel.inputFromValue).toEqual("");
+    exchangeModel.updateInputFromValue(10);
+    expect(exchangeModel.inputFromValue).toEqual(10);
+  });
 
+  it("test updateInputToValue", () => {
+    expect(exchangeModel.inputToValue).toEqual("");
+    exchangeModel.updateInputToValue(10);
+    expect(exchangeModel.inputToValue).toEqual(10);
+  });
 
-    //{
-//   "disclaimer": "Usage subject to terms: https://openexchangerates.org/terms",
-//   "license": "https://openexchangerates.org/license",
-//   "timestamp": 1619110800,
-//   "base": "USD",
-//   "rates": {
-//     "EUR": 0.832702,
-//     "GBP": 0.722364,
-//     "UAH": 28.044385,
-//     "USD": 1
-//   }
-// }
+  it("test updateBalanceFrom", () => {
+    if (exchangeModel.activeAccountFrom) {
+      expect(exchangeModel.activeAccountFrom?.balance).toEqual(100);
+    }
 
+    exchangeModel.updateInputFromValue(10);
+    if (exchangeModel.activeAccountFrom && exchangeModel.inputFromValue) {
+      exchangeModel.updateBalanceFrom(
+        exchangeModel.activeAccountFrom?.id,
+        Number(exchangeModel.inputFromValue),
+      );
+      expect(exchangeModel.inputFromValue).toEqual(10);
+      expect(exchangeModel.activeAccountFrom?.balance).toEqual(90);
+    }
+  });
 
-//{
-//   "AED": "United Arab Emirates Dirham",
-//   "AFN": "Afghan Afghani",
-//   "ALL": "Albanian Lek",
-//   "AMD": "Armenian Dram",
-//   "ANG": "Netherlands Antillean Guilder",
-//   "AOA": "Angolan Kwanza",
-//   "ARS": "Argentine Peso",
-//   "AUD": "Australian Dollar",
-//   "AWG": "Aruban Florin",
-//   "AZN": "Azerbaijani Manat",
-//   "BAM": "Bosnia-Herzegovina Convertible Mark",
-//   "BBD": "Barbadian Dollar",
-//   "BDT": "Bangladeshi Taka",
-//   "BGN": "Bulgarian Lev",
-//   "BHD": "Bahraini Dinar",
-//   "BIF": "Burundian Franc",
-//   "BMD": "Bermudan Dollar",
-//   "BND": "Brunei Dollar",
-//   "BOB": "Bolivian Boliviano",
-//   "BRL": "Brazilian Real",
-//   "BSD": "Bahamian Dollar",
-//   "BTC": "Bitcoin",
-//   "BTN": "Bhutanese Ngultrum",
-//   "BWP": "Botswanan Pula",
-//   "BYN": "Belarusian Ruble",
-//   "BZD": "Belize Dollar",
-//   "CAD": "Canadian Dollar",
-//   "CDF": "Congolese Franc",
-//   "CHF": "Swiss Franc",
-//   "CLF": "Chilean Unit of Account (UF)",
-//   "CLP": "Chilean Peso",
-//   "CNH": "Chinese Yuan (Offshore)",
-//   "CNY": "Chinese Yuan",
-//   "COP": "Colombian Peso",
-//   "CRC": "Costa Rican Colón",
-//   "CUC": "Cuban Convertible Peso",
-//   "CUP": "Cuban Peso",
-//   "CVE": "Cape Verdean Escudo",
-//   "CZK": "Czech Republic Koruna",
-//   "DJF": "Djiboutian Franc",
-//   "DKK": "Danish Krone",
-//   "DOP": "Dominican Peso",
-//   "DZD": "Algerian Dinar",
-//   "EGP": "Egyptian Pound",
-//   "ERN": "Eritrean Nakfa",
-//   "ETB": "Ethiopian Birr",
-//   "EUR": "Euro",
-//   "FJD": "Fijian Dollar",
-//   "FKP": "Falkland Islands Pound",
-//
-//   "GEL": "Georgian Lari",
-//   "GGP": "Guernsey Pound",
-//   "GHS": "Ghanaian Cedi",
-//   "GIP": "Gibraltar Pound",
-//   "GMD": "Gambian Dalasi",
-//   "GNF": "Guinean Franc",
-//   "GTQ": "Guatemalan Quetzal",
-//   "GYD": "Guyanaese Dollar",
-//   "HKD": "Hong Kong Dollar",
-//   "HNL": "Honduran Lempira",
-//   "HRK": "Croatian Kuna",
-//   "HTG": "Haitian Gourde",
-//   "HUF": "Hungarian Forint",
-//   "IDR": "Indonesian Rupiah",
-//   "ILS": "Israeli New Sheqel",
-//   "IMP": "Manx pound",
-//   "INR": "Indian Rupee",
-//   "IQD": "Iraqi Dinar",
-//   "IRR": "Iranian Rial",
-//   "ISK": "Icelandic Króna",
-//   "JEP": "Jersey Pound",
-//   "JMD": "Jamaican Dollar",
-//   "JOD": "Jordanian Dinar",
-//   "JPY": "Japanese Yen",
-//   "KES": "Kenyan Shilling",
-//   "KGS": "Kyrgystani Som",
-//   "KHR": "Cambodian Riel",
-//   "KMF": "Comorian Franc",
-//   "KPW": "North Korean Won",
-//   "KRW": "South Korean Won",
-//   "KWD": "Kuwaiti Dinar",
-//   "KYD": "Cayman Islands Dollar",
-//   "KZT": "Kazakhstani Tenge",
-//   "LAK": "Laotian Kip",
-//   "LBP": "Lebanese Pound",
-//   "LKR": "Sri Lankan Rupee",
-//   "LRD": "Liberian Dollar",
-//   "LSL": "Lesotho Loti",
-//   "LYD": "Libyan Dinar",
-//   "MAD": "Moroccan Dirham",
-//   "MDL": "Moldovan Leu",
-//   "MGA": "Malagasy Ariary",
-//   "MKD": "Macedonian Denar",
-//   "MMK": "Myanma Kyat",
-//   "MNT": "Mongolian Tugrik",
-//   "MOP": "Macanese Pataca",
-//   "MRO": "Mauritanian Ouguiya (pre-2018)",
-//   "MRU": "Mauritanian Ouguiya",
-//   "MUR": "Mauritian Rupee",
-//   "MVR": "Maldivian Rufiyaa",
-//   "MWK": "Malawian Kwacha",
-//   "MXN": "Mexican Peso",
-//   "MYR": "Malaysian Ringgit",
-//   "MZN": "Mozambican Metical",
-//   "NAD": "Namibian Dollar",
-//   "NGN": "Nigerian Naira",
-//   "NIO": "Nicaraguan Córdoba",
-//   "NOK": "Norwegian Krone",
-//   "NPR": "Nepalese Rupee",
-//   "NZD": "New Zealand Dollar",
-//   "OMR": "Omani Rial",
-//   "PAB": "Panamanian Balboa",
-//   "PEN": "Peruvian Nuevo Sol",
-//   "PGK": "Papua New Guinean Kina",
-//   "PHP": "Philippine Peso",
-//   "PKR": "Pakistani Rupee",
-//   "PLN": "Polish Zloty",
-//   "PYG": "Paraguayan Guarani",
-//   "QAR": "Qatari Rial",
-//   "RON": "Romanian Leu",
-//   "RSD": "Serbian Dinar",
-//   "RUB": "Russian Ruble",
-//   "RWF": "Rwandan Franc",
-//   "SAR": "Saudi Riyal",
-//   "SBD": "Solomon Islands Dollar",
-//   "SCR": "Seychellois Rupee",
-//   "SDG": "Sudanese Pound",
-//   "SEK": "Swedish Krona",
-//   "SGD": "Singapore Dollar",
-//   "SHP": "Saint Helena Pound",
-//   "SLL": "Sierra Leonean Leone",
-//   "SOS": "Somali Shilling",
-//   "SRD": "Surinamese Dollar",
-//   "SSP": "South Sudanese Pound",
-//   "STD": "São Tomé and Príncipe Dobra (pre-2018)",
-//   "STN": "São Tomé and Príncipe Dobra",
-//   "SVC": "Salvadoran Colón",
-//   "SYP": "Syrian Pound",
-//   "SZL": "Swazi Lilangeni",
-//   "THB": "Thai Baht",
-//   "TJS": "Tajikistani Somoni",
-//   "TMT": "Turkmenistani Manat",
-//   "TND": "Tunisian Dinar",
-//   "TOP": "Tongan Pa'anga",
-//   "TRY": "Turkish Lira",
-//   "TTD": "Trinidad and Tobago Dollar",
-//   "TWD": "New Taiwan Dollar",
-//   "TZS": "Tanzanian Shilling",
-//   "UAH": "Ukrainian Hryvnia",
-//   "UGX": "Ugandan Shilling",
-//   "USD": "United States Dollar",
-//   "UYU": "Uruguayan Peso",
-//   "UZS": "Uzbekistan Som",
-//   "VEF": "Venezuelan Bolívar Fuerte (Old)",
-//   "VES": "Venezuelan Bolívar Soberano",
-//   "VND": "Vietnamese Dong",
-//   "VUV": "Vanuatu Vatu",
-//   "WST": "Samoan Tala",
-//   "XAF": "CFA Franc BEAC",
-//   "XAG": "Silver Ounce",
-//   "XAU": "Gold Ounce",
-//   "XCD": "East Caribbean Dollar",
-//   "XDR": "Special Drawing Rights",
-//   "XOF": "CFA Franc BCEAO",
-//   "XPD": "Palladium Ounce",
-//   "XPF": "CFP Franc",
-//   "XPT": "Platinum Ounce",
-//   "YER": "Yemeni Rial",
-//   "ZAR": "South African Rand",
-//   "ZMW": "Zambian Kwacha",
-//   "ZWL": "Zimbabwean Dollar"
-// }
+  it("test updateBalanceTo", () => {
+    if (exchangeModel.activeAccountTo) {
+      expect(exchangeModel.activeAccountTo?.balance).toEqual(100);
+    }
+
+    exchangeModel.updateInputToValue(10);
+    if (exchangeModel.activeAccountTo && exchangeModel.inputToValue) {
+      exchangeModel.updateBalanceTo(
+        exchangeModel.activeAccountTo?.id,
+        Number(exchangeModel.inputToValue),
+      );
+      expect(exchangeModel.inputToValue).toEqual(10);
+      expect(exchangeModel.activeAccountTo?.balance).toEqual(110);
+    }
+  });
+
+  it("test exchange", () => {
+    if (exchangeModel.activeAccountFrom && exchangeModel.activeAccountTo) {
+      expect(exchangeModel.activeAccountFrom?.currency).toEqual("EUR");
+      expect(exchangeModel.activeAccountFrom?.balance).toEqual(100);
+      expect(exchangeModel.activeAccountTo?.currency).toEqual("GBP");
+      expect(exchangeModel.activeAccountTo?.balance).toEqual(100);
+
+      exchangeModel.updateInputFromValue(1);
+      exchangeModel.updateInputToValue(0.87);
+      exchangeModel.exchange();
+
+      expect(exchangeModel.activeAccountFrom?.balance).toEqual(99);
+      expect(exchangeModel.activeAccountFrom?.history).toHaveLength(1);
+      expect(exchangeModel.activeAccountTo?.balance).toEqual(100.87);
+      expect(exchangeModel.activeAccountTo?.history).toHaveLength(1);
+    }
+  });
+
+  // Exchange to GBP - €10.00 + £8.72
+  it("test updateHistory for activeAccountFrom", () => {
+    if (exchangeModel.activeAccountFrom) {
+      expect(exchangeModel.activeAccountFrom?.history).toHaveLength(0);
+      expect(exchangeModel.inputFromValue).toEqual("");
+      expect(exchangeModel.inputToValue).toEqual("");
+      exchangeModel.updateInputFromValue(10);
+      exchangeModel.updateInputToValue(8.72);
+      exchangeModel.updateHistoryInAccount(exchangeModel.activeAccountFrom.id, {
+        name: `Exchange to ${exchangeModel.activeAccountTo?.currency}`,
+        from: `- ${exchangeModel.formatCurrency(
+          exchangeModel.inputFromValue,
+          exchangeModel.activeAccountFrom?.currency || "",
+        )}`,
+        to: `+ ${exchangeModel.formatCurrency(
+          exchangeModel.inputToValue,
+          exchangeModel.activeAccountTo?.currency || "",
+        )}`,
+      });
+      expect(exchangeModel.inputFromValue).toEqual(10);
+      expect(exchangeModel.inputToValue).toEqual(8.72);
+      expect(exchangeModel.activeAccountFrom?.history).toHaveLength(1);
+      expect(exchangeModel.activeAccountFrom?.history[0].from).toEqual(
+        "- €10.00",
+      );
+      expect(exchangeModel.activeAccountFrom?.history[0].to).toEqual("+ £8.72");
+      expect(exchangeModel.activeAccountFrom?.history[0].name).toEqual(
+        "Exchange to GBP",
+      );
+    }
+  });
+
+  // Exchange from EUR + £8.72 - €10.00
+  it("test updateHistory for activeAccountTo", () => {
+    if (exchangeModel.activeAccountTo) {
+      expect(exchangeModel.activeAccountTo?.history).toHaveLength(0);
+      expect(exchangeModel.inputFromValue).toEqual("");
+      expect(exchangeModel.inputToValue).toEqual("");
+      exchangeModel.updateInputFromValue(10);
+      exchangeModel.updateInputToValue(8.72);
+
+      exchangeModel.updateHistoryInAccount(exchangeModel.activeAccountTo.id, {
+        name: `Exchange from ${exchangeModel.activeAccountFrom?.currency}`,
+        from: `+ ${exchangeModel.formatCurrency(
+          exchangeModel.inputToValue,
+          exchangeModel.activeAccountTo?.currency || "",
+        )}`,
+        to: `- ${exchangeModel.formatCurrency(
+          exchangeModel.inputFromValue,
+          exchangeModel.activeAccountFrom?.currency || "",
+        )}`,
+      });
+
+      expect(exchangeModel.inputFromValue).toEqual(10);
+      expect(exchangeModel.inputToValue).toEqual(8.72);
+      expect(exchangeModel.activeAccountTo?.history).toHaveLength(1);
+      expect(exchangeModel.activeAccountTo?.history[0].from).toEqual("+ £8.72");
+      expect(exchangeModel.activeAccountTo?.history[0].to).toEqual("- €10.00");
+      expect(exchangeModel.activeAccountTo?.history[0].name).toEqual(
+        "Exchange from EUR",
+      );
+    }
+  });
+
+  it("test formatCurrency", () => {
+    expect(exchangeModel.formatCurrency(10, "EUR")).toEqual("€10.00");
+    expect(exchangeModel.formatCurrency(10.5, "UAH")).toEqual("₴10.50");
+    expect(exchangeModel.formatCurrency(100.5, "USD")).toEqual("$100.50");
+  });
+
+  it("test convertCurrency", () => {
+    if (exchangeModel.ratesData) {
+      expect(
+        exchangeModel.convertCurrency(10, {
+          from: "UAH",
+          to: "USD",
+        }),
+      ).toEqual(0.36);
+      expect(
+        exchangeModel.convertCurrency(10, {
+          from: "USD",
+          to: "UAH",
+        }),
+      ).toEqual(280.44);
+
+      expect(
+        exchangeModel.convertCurrency(10, {
+          from: "GBP",
+          to: "EUR",
+        }),
+      ).toEqual(11.53);
+    }
+  });
+});

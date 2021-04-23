@@ -6,7 +6,7 @@ import styles from "./Button.modules.scss";
 interface IButtonProps {
   children: JSX.Element | string;
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   type?: "circle" | "normal";
   bg?: "transparent" | "white" | "black";
 }
