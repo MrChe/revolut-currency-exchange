@@ -15,7 +15,7 @@ export const HistoryList = observer(function HistoryList(): JSX.Element {
       {accountHistory.map((h: AccountHistory) => {
         return (
           <li key={h.id} className={styles.HistoryListItem}>
-            <div className={styles.HistoryWrapper}>
+            <div className={styles.HistoryListWrapper}>
               <div className={styles.HistoryLeftPart}>
                 <p className={styles.HistoryCurrencyName}>{h.name}</p>
                 <p className={styles.HistoryTime}>{h.time}</p>

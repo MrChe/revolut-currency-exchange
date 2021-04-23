@@ -1,11 +1,12 @@
 import { RootModel } from "./RootModel";
-// import { persistStore } from "../utils/mobx-persist.utils";
 import { action, computed, makeAutoObservable, observable } from "mobx";
-import { AccountModel } from "./AccountModel";
+import { AccountHistory, AccountModel } from "./AccountModel";
 import { Cashify } from "cashify";
 import { Options } from "cashify/dist/lib/options";
 import currencyJS from "currency.js";
 import getSymbolFromCurrency from "currency-symbol-map";
+import { persistStore } from "../utils/persist";
+import { clearPersist, stopPersist, startPersist } from "mobx-persist-store";
 
 export interface IRates {
   disclaimer: string;
@@ -21,7 +22,6 @@ export class ExchangeModel {
   public ratesData: IRates | null;
   public activeAccountFrom: AccountModel | null;
   public activeAccountTo: AccountModel | null;
-  public cashify: Cashify | null;
   public inputFromValue: string | number;
   public inputToValue: string | number;
   public currencyNames: Record<string, string>;
@@ -29,7 +29,6 @@ export class ExchangeModel {
     this.rootModel = rootModel;
     this.accounts = [];
     this.ratesData = null;
-    this.cashify = null;
     this.inputToValue = "";
     this.inputFromValue = "";
     this.activeAccountFrom = null;
@@ -37,12 +36,13 @@ export class ExchangeModel {
     this.currencyNames = {};
     makeAutoObservable(this, {
       rootModel: false,
-      cashify: false,
       accounts: observable,
       currencyNames: observable,
       inputFromValue: observable,
       inputToValue: observable,
       ratesData: observable,
+      activeAccountFrom: observable,
+      activeAccountTo: observable,
       accountsAsArray: computed,
       setActiveAccountTo: action,
       setActiveAccountFrom: action,
@@ -51,9 +51,24 @@ export class ExchangeModel {
       setCurrencyNames: action,
       isDisableExchange: computed,
     });
+    persistStore(
+      this,
+      [
+        "accounts",
+        "currencyNames",
+        "ratesData",
+        "activeAccountFrom",
+        "activeAccountTo",
+        "inputFromValue",
+        "inputToValue",
+        "accountsAsArray",
+        "isDisableExchange",
+      ],
+      "ExchangeModel",
+    );
   }
 
-  public init = async (): Promise<void> => {
+  public init = async (): Promise<any> => {
     try {
       const rates = await this.rootModel.ApiModel.getLatestRatesRequest(
         ["USD", "EUR", "GBP", "UAH"],
@@ -63,19 +78,11 @@ export class ExchangeModel {
       if (rates && currencyNames) {
         this.setRatesData(rates);
         this.setAccounts(rates);
-        this.initCachify(rates);
         this.setCurrencyNames(currencyNames);
       }
     } catch (error) {
       console.error("init", error);
     }
-  };
-
-  public initCachify = (ratesData: IRates): void => {
-    this.cashify = new Cashify({
-      base: ratesData.base,
-      rates: ratesData.rates,
-    });
   };
 
   public setActiveAccountTo = (id: string): void => {
@@ -123,7 +130,14 @@ export class ExchangeModel {
     amount: number | string,
     options?: Partial<Options>,
   ): number => {
-    return Number(this.cashify?.convert(amount, options).toFixed(2));
+    // console.log("cashify", this.cashify);
+    const cashify = this.ratesData
+      ? new Cashify({
+          base: this.ratesData.base,
+          rates: this.ratesData.rates,
+        })
+      : null;
+    return Number(cashify?.convert(amount, options).toFixed(2));
   };
 
   public formatCurrency = (
@@ -136,37 +150,41 @@ export class ExchangeModel {
   };
 
   public exchange = (): void => {
-    this.activeAccountFrom?.updateBalance(
-      this.activeAccountFrom?.balance - Number(this.inputFromValue),
-    );
+    if (this.activeAccountFrom && this.activeAccountTo) {
+      this.updateBalanceInAccount(
+        this.activeAccountFrom?.id,
+        Number(this.inputFromValue),
+      );
 
-    this.activeAccountFrom?.updateHistory({
-      name: `Exchange to ${this.activeAccountTo?.currency}`,
-      from: `- ${this.formatCurrency(
-        this.inputFromValue,
-        this.activeAccountFrom?.currency || "",
-      )}`,
-      to: `+ ${this.formatCurrency(
-        this.inputToValue,
-        this.activeAccountTo?.currency || "",
-      )}`,
-    });
+      this.updateHistoryInAccount(this.activeAccountFrom?.id, {
+        name: `Exchange to ${this.activeAccountTo?.currency}`,
+        from: `- ${this.formatCurrency(
+          this.inputFromValue,
+          this.activeAccountFrom?.currency || "",
+        )}`,
+        to: `+ ${this.formatCurrency(
+          this.inputToValue,
+          this.activeAccountTo?.currency || "",
+        )}`,
+      });
 
-    this.activeAccountTo?.updateBalance(
-      this.activeAccountTo?.balance + Number(this.inputToValue),
-    );
+      this.updateBalanceInAccount(
+        this.activeAccountTo?.id,
+        Number(this.inputToValue),
+      );
 
-    this.activeAccountTo?.updateHistory({
-      name: `Exchange from ${this.activeAccountFrom?.currency}`,
-      from: `+ ${this.formatCurrency(
-        this.inputToValue,
-        this.activeAccountTo?.currency || "",
-      )}`,
-      to: `- ${this.formatCurrency(
-        this.inputFromValue,
-        this.activeAccountFrom?.currency || "",
-      )}`,
-    });
+      this.updateHistoryInAccount(this.activeAccountTo.id, {
+        name: `Exchange from ${this.activeAccountFrom?.currency}`,
+        from: `+ ${this.formatCurrency(
+          this.inputToValue,
+          this.activeAccountTo?.currency || "",
+        )}`,
+        to: `- ${this.formatCurrency(
+          this.inputFromValue,
+          this.activeAccountFrom?.currency || "",
+        )}`,
+      });
+    }
   };
 
   public updateInputFromValue = (value: string | number): void => {
@@ -190,10 +208,47 @@ export class ExchangeModel {
     this.accounts = [];
     this.currencyNames = {};
     this.ratesData = null;
-    this.cashify = null;
     this.inputToValue = "";
     this.inputFromValue = "";
     this.activeAccountFrom = null;
     this.activeAccountTo = null;
+  };
+
+  public updateBalanceInAccount = (
+    accountId: string,
+    balance: number,
+  ): void => {
+    const found = this.getAccountById(accountId);
+    if (found) {
+      found.balance = found?.balance + Number(balance.toFixed(2));
+    }
+  };
+
+  public updateHistoryInAccount = (
+    accountId: string,
+    data: Partial<AccountHistory>,
+  ): void => {
+    const found = this.getAccountById(accountId);
+    if (found) {
+      found.history.push(
+        new AccountHistory({
+          name: data.name,
+          to: data.to,
+          from: data.from,
+        }),
+      );
+    }
+  };
+
+  public clearStore = async (): Promise<void> => {
+    await clearPersist(this);
+  };
+
+  public stopPersist = (): void => {
+    stopPersist(this);
+  };
+
+  public startPersist = (): void => {
+    startPersist(this);
   };
 }

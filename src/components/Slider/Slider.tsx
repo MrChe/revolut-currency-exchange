@@ -4,10 +4,11 @@ import SwiperCore, {
   Navigation,
   Pagination,
   EffectCube,
-  HashNavigation,
+  History,
 } from "swiper";
 import SwiperClass from "swiper/types/swiper-class";
-import getSymbolFromCurrency from "currency-symbol-map";
+import { AccountModel } from "../../models/AccountModel";
+import { HistoryOptions } from "swiper/types/components/history";
 
 import "swiper/swiper-bundle.min.css";
 import "swiper/components/navigation/navigation.min.css";
@@ -15,15 +16,14 @@ import "swiper/components/pagination/pagination.min.css";
 import "swiper/components/scrollbar/scrollbar.min.css";
 
 import styles from "./Slider.module.scss";
-import { AccountModel } from "../../models/AccountModel";
 
 // install Swiper modules
-SwiperCore.use([Navigation, Pagination, EffectCube, HashNavigation]);
+SwiperCore.use([Navigation, Pagination, EffectCube, History]);
 
 interface ISliderProps {
   data: AccountModel[];
   id: string;
-  hashNavigation?: boolean;
+  history?: HistoryOptions | boolean;
   onSlideChange?: (swiper: SwiperClass) => void;
   onSwiper?: (swiper: SwiperClass) => void;
   children: JSX.Element;
@@ -33,7 +33,7 @@ export const Slider = (props: ISliderProps): JSX.Element => {
   return (
     <div className={styles.Slider}>
       <Swiper
-        hashNavigation={props.hashNavigation}
+        history={props.history}
         id={props.id}
         tag={"section"}
         wrapperTag={"ul"}
@@ -49,7 +49,7 @@ export const Slider = (props: ISliderProps): JSX.Element => {
       >
         {props.data.map((account) => {
           return (
-            <SwiperSlide tag={"li"} key={account.id} data-hash={account.id}>
+            <SwiperSlide tag={"li"} key={account.id} data-history={account.id}>
               {props.children}
             </SwiperSlide>
           );

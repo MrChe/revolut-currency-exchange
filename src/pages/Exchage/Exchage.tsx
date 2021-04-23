@@ -8,6 +8,7 @@ import { Button } from "../../components/Button/Button";
 import SwiperClass from "swiper/types/swiper-class";
 import { Account } from "../../components/Account/Account";
 import { InputNumber } from "../../components/InputNumber/InputNumber";
+import { Spinner } from "../../components/Spinner/Spinner";
 
 import styles from "./Exchage.module.scss";
 
@@ -51,7 +52,9 @@ export const Exchange = observer(function Exchange(): JSX.Element {
 
     // if value is not blank, then test the regex
 
+    console.log("before value", value);
     if (value === "" || regExp.test(value)) {
+      console.log("after value", value);
       ExchangeModel.updateInputFromValue(value);
       if (activeAccountFrom && activeAccountTo) {
         ExchangeModel.updateInputToValue(
@@ -87,38 +90,44 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     ExchangeModel.exchange();
     ExchangeModel.updateInputToValue("");
     ExchangeModel.updateInputFromValue("");
-    history.push(`/dashboard/#${activeAccountFrom?.id}`);
+    history.push(`/dashboard/${activeAccountFrom?.id}`);
   };
 
   const handleCancel = () => {
-    history.push(`/dashboard/#${activeAccountFrom?.id}`);
+    history.push(`/dashboard/${activeAccountFrom?.id}`);
   };
 
   const handleChangeSlideFrom = (swiper: SwiperClass) => {
-    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute(
+      "data-history",
+    );
     if (slideId) {
       ExchangeModel.setActiveAccountFrom(slideId);
     }
   };
 
   const handleChangeSlideTo = (swiper: SwiperClass) => {
-    console.log("to activeIndex", swiper.slides);
-    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute(
+      "data-history",
+    );
     if (slideId) {
       ExchangeModel.setActiveAccountTo(slideId);
     }
   };
 
   const onInitSwiperFrom = (swiper: SwiperClass) => {
-    console.log("from activeIndex", swiper.slides);
-    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute(
+      "data-history",
+    );
     if (slideId) {
       ExchangeModel.setActiveAccountFrom(slideId);
     }
   };
 
   const onInitSwiperTo = (swiper: SwiperClass) => {
-    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute(
+      "data-history",
+    );
     if (slideId) {
       ExchangeModel.setActiveAccountTo(slideId);
     }
@@ -140,7 +149,9 @@ export const Exchange = observer(function Exchange(): JSX.Element {
       >
         <div className={styles.SliderWrapper}>
           <Slider
-            hashNavigation={true}
+            history={{
+              key: "account",
+            }}
             data={ExchangeModel.accountsAsArray}
             id={"from_account_slider"}
             onSlideChange={handleChangeSlideFrom}
@@ -191,6 +202,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
       </div>
     </div>
   ) : (
-    <div>Loading...</div>
+    <div className={styles.LoadingWrapper}>
+      <Spinner />
+    </div>
   );
 });

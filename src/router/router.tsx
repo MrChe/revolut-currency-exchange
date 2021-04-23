@@ -10,7 +10,7 @@ export const ApplicationRouter = (): JSX.Element => {
         <Route path="/dashboard/:id?" exact>
           <Dashboard />
         </Route>
-        <Route path="/exchange/:id?" exact>
+        <Route path="/account/:id" exact>
           <Exchange />
         </Route>
         <Redirect from={"/"} to={"/dashboard"} />

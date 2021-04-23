@@ -8,6 +8,7 @@ import SwiperClass from "swiper/types/swiper-class";
 import { Button } from "../../components/Button/Button";
 import { Account } from "../../components/Account/Account";
 import { HistoryList } from "../../components/HistoryList/HistoryList";
+import { Spinner } from "../../components/Spinner/Spinner";
 
 import styles from "./Dashboard.module.scss";
 
@@ -24,18 +25,23 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
   const activeAccountFrom = ExchangeModel.activeAccountFrom;
 
   const handleSlideChange = (swiper: SwiperClass) => {
-    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute(
+      "data-history",
+    );
     if (slideId) {
       ExchangeModel.setActiveAccountFrom(slideId);
     }
   };
 
   const goToExchange = () => {
-    history.push(`/exchange/#${activeAccountFrom?.id}`);
+    history.push(`/account/${activeAccountFrom?.id}`);
   };
 
   const onInitSwiper = (swiper: SwiperClass) => {
-    const slideId = swiper.slides[swiper.activeIndex].getAttribute("data-hash");
+    const slideId = swiper.slides[swiper.activeIndex].getAttribute(
+      "data-history",
+    );
+    history.replace({ pathname: `/dashboard/${slideId}` });
     if (slideId) {
       ExchangeModel.setActiveAccountFrom(slideId);
     }
@@ -46,7 +52,10 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
       <div className={styles.Preview}>
         <div className={styles.SliderWrapper}>
           <Slider
-            hashNavigation={true}
+            history={{
+              key: "",
+              // replaceState: true,
+            }}
             data={ExchangeModel.accountsAsArray}
             id={"dashboard_slider"}
             onSlideChange={handleSlideChange}
@@ -67,6 +76,8 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
       </div>
     </div>
   ) : (
-    <div>Loading</div>
+    <div className={styles.LoadingWrapper}>
+      <Spinner />
+    </div>
   );
 });

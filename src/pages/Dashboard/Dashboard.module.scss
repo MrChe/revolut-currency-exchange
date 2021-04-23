@@ -3,17 +3,16 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-
 }
 
 .Preview {
   position: relative;
-  flex: 1;
+  height: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(120deg, rgb(33, 72, 163) 0%, rgb(60, 122, 251) 50%, rgb(42, 103, 228) 95%);
-  padding: 50px;
+  padding: 50px 20px;
 }
 
 .SliderWrapper {
@@ -39,6 +38,16 @@
 .HistoryWrapper {
   position: relative;
   background-color: white;
-  flex: 1;
-  padding: 50px;
+  height: 50%;
+  overflow-y: scroll;
+  padding: 20px;
+}
+
+.LoadingWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
