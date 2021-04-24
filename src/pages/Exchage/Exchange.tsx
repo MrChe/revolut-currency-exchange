@@ -6,11 +6,10 @@ import cn from "classnames";
 import { useHistory } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import SwiperClass from "swiper/types/swiper-class";
-import { Account } from "../../components/Account/Account";
 import { InputNumber } from "../../components/InputNumber/InputNumber";
 import { Spinner } from "../../components/Spinner/Spinner";
 
-import styles from "./Exchage.module.scss";
+import styles from "./Exchange.module.scss";
 
 export const Exchange = observer(function Exchange(): JSX.Element {
   const { ExchangeModel } = useStore();
