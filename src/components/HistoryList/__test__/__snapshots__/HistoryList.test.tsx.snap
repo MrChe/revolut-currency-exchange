@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HistoryList Component HistoryList snapshot 1`] = `
+<ul
+  className="HistoryList"
+>
+  <li
+    className="HistoryListItem"
+  >
+    <div
+      className="HistoryListWrapper"
+    >
+      <div
+        className="HistoryLeftPart"
+      >
+        <p
+          className="HistoryCurrencyName"
+        >
+          Exchange to GBP
+        </p>
+        <p
+          className="HistoryTime"
+        >
+          01/01/2021 00:00
+        </p>
+      </div>
+      <div
+        className="HistoryRightPart"
+      >
+        <p
+          className="BigCurrency"
+        >
+          - €0.00
+        </p>
+        <p
+          className="SmallCurrency"
+        >
+          + £0.00
+        </p>
+      </div>
+    </div>
+  </li>
+</ul>
+`;

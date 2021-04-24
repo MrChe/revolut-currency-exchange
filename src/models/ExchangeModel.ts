@@ -24,7 +24,6 @@ export class ExchangeModel {
   public activeAccountTo: AccountModel | null;
   public inputFromValue: string | number;
   public inputToValue: string | number;
-  public currencyNames: Record<string, string>;
   constructor(rootModel: RootModel) {
     this.rootModel = rootModel;
     this.accounts = [];
@@ -33,11 +32,9 @@ export class ExchangeModel {
     this.inputFromValue = "";
     this.activeAccountFrom = null;
     this.activeAccountTo = null;
-    this.currencyNames = {};
     makeAutoObservable(this, {
       rootModel: false,
       accounts: observable,
-      currencyNames: observable,
       inputFromValue: observable,
       inputToValue: observable,
       ratesData: observable,
@@ -48,14 +45,12 @@ export class ExchangeModel {
       setActiveAccountFrom: action,
       updateInputFromValue: action,
       updateInputToValue: action,
-      setCurrencyNames: action,
       isDisableExchange: computed,
     });
     persistStore(
       this,
       [
         "accounts",
-        "currencyNames",
         "ratesData",
         "activeAccountFrom",
         "activeAccountTo",
@@ -72,11 +67,9 @@ export class ExchangeModel {
         ["USD", "EUR", "GBP", "UAH"],
         "USD",
       );
-      const currencyNames = await this.rootModel.ApiModel.getCurrenciesRequest();
-      if (rates && currencyNames) {
+      if (rates) {
         this.setRatesData(rates);
         this.setAccounts(rates);
-        this.setCurrencyNames(currencyNames);
       }
     } catch (error) {
       console.error("init", error);
@@ -103,10 +96,6 @@ export class ExchangeModel {
 
   public setRatesData = (ratesData: IRates): void => {
     this.ratesData = ratesData;
-  };
-
-  public setCurrencyNames = (currencyNames: Record<string, string>): void => {
-    this.currencyNames = currencyNames;
   };
 
   public setAccounts = (ratesData: IRates): void => {
@@ -199,7 +188,6 @@ export class ExchangeModel {
 
   public clearModel = (): void => {
     this.accounts = [];
-    this.currencyNames = {};
     this.ratesData = null;
     this.inputToValue = "";
     this.inputFromValue = "";

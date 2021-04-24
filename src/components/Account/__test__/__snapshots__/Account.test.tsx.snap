@@ -1,7 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test Account Component Account From Exchange snapshot 1`] = `<div />`;
+exports[`Test Account Component Account type Exchange snapshot 1`] = `
+<div
+  className="Account View_Exchange"
+>
+  <div
+    className="CurrencyInformation"
+  >
+    <div
+      className="Wrapper"
+    >
+      <div>
+        <p
+          className="CurrencyTitle"
+        >
+          EUR
+        </p>
+        <p
+          className="CurrencyText"
+        >
+          You have: 
+          €100.00
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
-exports[`Test Account Component Account From Preview snapshot 1`] = `<div />`;
-
-exports[`Test Account Component Account To Exchange snapshot 1`] = `<div />`;
+exports[`Test Account Component Account type Preview snapshot 1`] = `
+<div
+  className="Account View_Preview"
+>
+  <div
+    className="CurrencyInformation"
+  >
+    <div
+      className="Wrapper"
+    >
+      <div>
+        <p
+          className="CurrencyTitle"
+        >
+          €100.00
+        </p>
+        <p>
+          Euro
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,36 +1,64 @@
-import React from "react";
+import React, { Fragment } from "react";
 import renderer from "react-test-renderer";
+import { rootModel } from "../../../models/RootModel";
 import { Account } from "../Account";
 import { TestWrapper } from "../../../../tests/testWrapper";
+import { ratesData } from "../../../../tests/mockData";
+import { formatCurrency, currencyNames } from "../../../utils/helpers";
 
 describe("Test Account Component", () => {
-  it("Account From Preview snapshot", () => {
+  const ExchangeModel = rootModel.ExchangeModel;
+  beforeAll(() => {
+    ExchangeModel.setRatesData(ratesData);
+    ExchangeModel.setAccounts(ratesData);
+    ExchangeModel.setActiveAccountFrom(ExchangeModel.accounts[0].id);
+    ExchangeModel.setActiveAccountTo(ExchangeModel.accounts[1].id);
+  });
+
+  it("Account type Preview snapshot", () => {
     const tree = renderer
       .create(
         <TestWrapper>
-          <Account type={"from"} view={"preview"} />
+          {ExchangeModel.activeAccountFrom ? (
+            <Account
+              balance={formatCurrency(
+                ExchangeModel.activeAccountFrom?.balance,
+                ExchangeModel.activeAccountFrom?.currency,
+              )}
+              view={"preview"}
+              currency={ExchangeModel.activeAccountFrom?.currency}
+              currencyName={
+                currencyNames[ExchangeModel.activeAccountFrom?.currency] || ""
+              }
+            />
+          ) : (
+            <Fragment />
+          )}
         </TestWrapper>,
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  it("Account From Exchange snapshot", () => {
+  it("Account type Exchange snapshot", () => {
     const tree = renderer
       .create(
         <TestWrapper>
-          <Account type={"from"} view={"exchange"} />
-        </TestWrapper>,
-      )
-      .toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
-  it("Account To Exchange snapshot", () => {
-    const tree = renderer
-      .create(
-        <TestWrapper>
-          <Account type={"to"} view={"exchange"} />
+          {ExchangeModel.activeAccountFrom ? (
+            <Account
+              balance={formatCurrency(
+                ExchangeModel.activeAccountFrom?.balance,
+                ExchangeModel.activeAccountFrom?.currency,
+              )}
+              view={"exchange"}
+              currency={ExchangeModel.activeAccountFrom?.currency}
+              currencyName={
+                currencyNames[ExchangeModel.activeAccountFrom?.currency] || ""
+              }
+            />
+          ) : (
+            <Fragment />
+          )}
         </TestWrapper>,
       )
       .toJSON();

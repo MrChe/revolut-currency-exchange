@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider Component Slider for dashboard snapshot 1`] = `
+<div
+  className="Slider"
+>
+  <section
+    className="swiper-container"
+    id="dashboard_slider"
+  >
+    <div
+      className="swiper-pagination"
+    />
+    <ul
+      className="swiper-wrapper"
+    >
+      <li
+        className="swiper-slide"
+        data-history={0}
+      >
+        <div
+          className="Account View_Preview"
+        >
+          <div
+            className="CurrencyInformation"
+          >
+            <div
+              className="Wrapper"
+            >
+              <div>
+                <p
+                  className="CurrencyTitle"
+                >
+                  €100.00
+                </p>
+                <p>
+                  Euro
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li
+        className="swiper-slide"
+        data-history={1}
+      >
+        <div
+          className="Account View_Preview"
+        >
+          <div
+            className="CurrencyInformation"
+          >
+            <div
+              className="Wrapper"
+            >
+              <div>
+                <p
+                  className="CurrencyTitle"
+                >
+                  £100.00
+                </p>
+                <p>
+                  British Pound Sterling
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li
+        className="swiper-slide"
+        data-history={2}
+      >
+        <div
+          className="Account View_Preview"
+        >
+          <div
+            className="CurrencyInformation"
+          >
+            <div
+              className="Wrapper"
+            >
+              <div>
+                <p
+                  className="CurrencyTitle"
+                >
+                  ₴100.00
+                </p>
+                <p>
+                  Ukrainian Hryvnia
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li
+        className="swiper-slide"
+        data-history={3}
+      >
+        <div
+          className="Account View_Preview"
+        >
+          <div
+            className="CurrencyInformation"
+          >
+            <div
+              className="Wrapper"
+            >
+              <div>
+                <p
+                  className="CurrencyTitle"
+                >
+                  $100.00
+                </p>
+                <p>
+                  United States Dollar
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+</div>
+`;

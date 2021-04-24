@@ -53,16 +53,14 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
         <div className={styles.SliderWrapper}>
           <Slider
             history={{
-              key: "",
-              // replaceState: true,
+              key: "dashboard",
             }}
             data={ExchangeModel.accountsAsArray}
             id={"dashboard_slider"}
             onSlideChange={handleSlideChange}
             onSwiper={onInitSwiper}
-          >
-            <Account type={"from"} view={"preview"} />
-          </Slider>
+            view={"preview"}
+          />
         </div>
       </div>
       <div className={styles.Controls}>

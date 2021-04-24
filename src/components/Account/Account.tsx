@@ -1,24 +1,21 @@
 import React from "react";
-import { observer } from "mobx-react-lite";
+// import { observer } from "mobx-react-lite";
 import cn from "classnames";
 import styles from "./Account.module.scss";
-import { useStore } from "../../models/connect";
+// import { useStore } from "../../models/connect";
+import { AccountModel } from "../../models/AccountModel";
 
 interface IAccountProps {
-  type: "from" | "to";
+  // type: "from" | "to";
   view: "preview" | "exchange";
+  currency: string;
+  currencyName: string;
+  balance: string;
 }
 
-export const Account = observer(function Account(
-  props: IAccountProps,
-): JSX.Element {
-  const { ExchangeModel } = useStore();
-  const currencyNames = ExchangeModel.currencyNames;
-  const accountFrom = ExchangeModel.activeAccountFrom;
-  const accountTo = ExchangeModel.activeAccountTo;
-  const activeAccount = props.type === "from" ? accountFrom : accountTo;
-
-  return activeAccount ? (
+export const Account = (props: IAccountProps): JSX.Element => {
+  const { currency, currencyName, balance } = props;
+  return (
     <div
       className={cn({
         [styles.Account]: true,
@@ -30,30 +27,39 @@ export const Account = observer(function Account(
         <div className={styles.Wrapper}>
           {props.view === "exchange" ? (
             <div>
-              <p className={styles.CurrencyTitle}>{activeAccount.currency}</p>
+              <p className={styles.CurrencyTitle}>
+                {
+                  // activeAccount.currency
+                  currency
+                }
+              </p>
               <p className={styles.CurrencyText}>
-                You have:{" "}
-                {ExchangeModel.formatCurrency(
-                  activeAccount.balance,
-                  activeAccount.currency,
-                )}
+                You have: {balance}
+                {/*{ExchangeModel.formatCurrency(*/}
+                {/*  activeAccount.balance,*/}
+                {/*  activeAccount.currency,*/}
+                {/*)}*/}
               </p>
             </div>
           ) : (
             <div>
               <p className={styles.CurrencyTitle}>
-                {ExchangeModel.formatCurrency(
-                  activeAccount.balance,
-                  activeAccount.currency,
-                )}
+                {balance}
+                {/*{ExchangeModel.formatCurrency(*/}
+                {/*  activeAccount.balance,*/}
+                {/*  activeAccount.currency,*/}
+                {/*)}*/}
               </p>
-              <p>{currencyNames[activeAccount.currency]}</p>
+              <p>
+                {
+                  currencyName
+                  // currencyNames[activeAccount.currency]
+                }
+              </p>
             </div>
           )}
         </div>
       </div>
     </div>
-  ) : (
-    <div></div>
   );
-});
+};

@@ -10,10 +10,3 @@ export const ratesData = {
     USD: 1,
   },
 };
-
-export const currencies = {
-  EUR: "Euro",
-  GBP: "British Pound Sterling",
-  UAH: "Ukrainian Hryvnia",
-  USD: "United States Dollar",
-};

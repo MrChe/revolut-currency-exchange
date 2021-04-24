@@ -1,14 +1,7 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   preset: "ts-jest/presets/js-with-ts",
   globals: {},
-  transform: {
-    "^.+\\.css$": "<rootDir>/tests/configs/cssTransform.ts",
-    "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)":
-      "<rootDir>/tests/configs/fileTransform.ts",
-    ".+\\.(png|jpg|gif)$": "identity-obj-proxy",
-    "^.+\\.svg$": "jest-svg-transformer",
-  },
+  transform: {},
   // roots: ['<rootDir>/src'],
   rootDir: "..",
   verbose: true,
@@ -22,7 +15,12 @@ module.exports = {
   modulePaths: [],
   moduleNameMapper: {
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+      "identity-obj-proxy",
+    "\\.(css|scss)$": "identity-obj-proxy",
+    "\\.svg": "<rootDir>/tests/configs/svgMock.js",
   },
+  setupFilesAfterEnv: ["<rootDir>/tests/configs/setupTests.js"],
   moduleFileExtensions: ["js", "ts", "tsx", "json", "jsx", "node"],
   // watchPlugins: [
   //   "jest-watch-typeahead/filename",

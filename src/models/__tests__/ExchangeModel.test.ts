@@ -1,5 +1,5 @@
 import { RootModel } from "../RootModel";
-import { currencies, ratesData } from "../../../tests/mockData";
+import { ratesData } from "../../../tests/mockData";
 import { beforeEach } from "jest-circus";
 
 describe("ExchangeModel", () => {
@@ -8,7 +8,6 @@ describe("ExchangeModel", () => {
   beforeEach(() => {
     exchangeModel.setRatesData(ratesData);
     exchangeModel.setAccounts(ratesData);
-    exchangeModel.setCurrencyNames(currencies);
     exchangeModel.setActiveAccountFrom(exchangeModel.accounts[0].id);
     exchangeModel.setActiveAccountTo(exchangeModel.accounts[1].id);
   });

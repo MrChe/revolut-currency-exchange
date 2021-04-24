@@ -156,9 +156,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
             id={"from_account_slider"}
             onSlideChange={handleChangeSlideFrom}
             onSwiper={onInitSwiperFrom}
-          >
-            <Account type={"from"} view={"exchange"} />
-          </Slider>
+            view={"exchange"}
+          />
         </div>
         <div className={styles.InputWrapper}>
           <div className={styles.InputSign}>-</div>
@@ -190,9 +189,8 @@ export const Exchange = observer(function Exchange(): JSX.Element {
             id={"to_account_slider"}
             onSlideChange={handleChangeSlideTo}
             onSwiper={onInitSwiperTo}
-          >
-            <Account type={"to"} view={"exchange"} />
-          </Slider>
+            view={"exchange"}
+          />
         </div>
 
         <div className={styles.InputWrapper}>

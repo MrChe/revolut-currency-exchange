@@ -1,9 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Button Component Button snapshot 1`] = `
+exports[`Button Component Button bg white disabled snapshot 1`] = `
 <button
-  className=""
+  className="Button Circle Bg_Type_White"
 >
-   Hello
+  Hello
+</button>
+`;
+
+exports[`Button Component Button bg white with icon snapshot 1`] = `
+<button
+  className="Button Circle Bg_Type_White"
+>
+  <test />
+</button>
+`;
+
+exports[`Button Component Button circle with icon snapshot 1`] = `
+<button
+  className="Button Circle"
+>
+  <test />
+</button>
+`;
+
+exports[`Button Component Button with text snapshot 1`] = `
+<button
+  className="Button"
+>
+  Hello
 </button>
 `;
