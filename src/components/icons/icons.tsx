@@ -7,8 +7,6 @@ import { ReactComponent as ProfileSVG } from "../../resources/icons/i-profile.sv
 import { ReactComponent as SendSVG } from "../../resources/icons/i-send.svg";
 import { ReactComponent as SupportSVG } from "../../resources/icons/i-support.svg";
 
-import "./icons.scss";
-
 export const Icon = {
   Account: AccountSVG,
   ArrowRight: ArrowRightSVG,
