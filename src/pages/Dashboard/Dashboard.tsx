@@ -6,7 +6,6 @@ import { Icon } from "../../components/icons/icons";
 import { useStore } from "../../models/connect";
 import SwiperClass from "swiper/types/swiper-class";
 import { Button } from "../../components/Button/Button";
-import { Account } from "../../components/Account/Account";
 import { HistoryList } from "../../components/HistoryList/HistoryList";
 import { Spinner } from "../../components/Spinner/Spinner";
 

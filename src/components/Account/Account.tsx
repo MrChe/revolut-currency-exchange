@@ -1,12 +1,8 @@
 import React from "react";
-// import { observer } from "mobx-react-lite";
 import cn from "classnames";
 import styles from "./Account.module.scss";
-// import { useStore } from "../../models/connect";
-import { AccountModel } from "../../models/AccountModel";
 
 interface IAccountProps {
-  // type: "from" | "to";
   view: "preview" | "exchange";
   currency: string;
   currencyName: string;
@@ -27,35 +23,13 @@ export const Account = (props: IAccountProps): JSX.Element => {
         <div className={styles.Wrapper}>
           {props.view === "exchange" ? (
             <div>
-              <p className={styles.CurrencyTitle}>
-                {
-                  // activeAccount.currency
-                  currency
-                }
-              </p>
-              <p className={styles.CurrencyText}>
-                You have: {balance}
-                {/*{ExchangeModel.formatCurrency(*/}
-                {/*  activeAccount.balance,*/}
-                {/*  activeAccount.currency,*/}
-                {/*)}*/}
-              </p>
+              <p className={styles.CurrencyTitle}>{currency}</p>
+              <p className={styles.CurrencyText}>You have: {balance}</p>
             </div>
           ) : (
             <div>
-              <p className={styles.CurrencyTitle}>
-                {balance}
-                {/*{ExchangeModel.formatCurrency(*/}
-                {/*  activeAccount.balance,*/}
-                {/*  activeAccount.currency,*/}
-                {/*)}*/}
-              </p>
-              <p>
-                {
-                  currencyName
-                  // currencyNames[activeAccount.currency]
-                }
-              </p>
+              <p className={styles.CurrencyTitle}>{balance}</p>
+              <p>{currencyName}</p>
             </div>
           )}
         </div>
