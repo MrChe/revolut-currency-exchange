@@ -1,6 +1,17 @@
 # Revolut Exchange Currency
 
 ## Task Description see [this](TASK_DESCRITION.md)
+
+## Features
+
+ - Multi accounts.
+ - Exchange between accounts.
+ - After change account, rates change too.
+ - History for account.
+ - Saving progress after reload page.
+ - Blazing fast ![img.png](screenshots/lighthouse.png)
+ - Mobile friendly.
+
 ## Usage
 **Development**
 

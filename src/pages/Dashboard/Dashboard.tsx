@@ -11,7 +11,7 @@ import { Spinner } from "../../components/Spinner/Spinner";
 
 import styles from "./Dashboard.module.scss";
 
-export const Dashboard = observer(function Dashboard(): JSX.Element {
+const Dashboard = observer(function Dashboard(): JSX.Element {
   const history = useHistory();
   const { ExchangeModel } = useStore();
 
@@ -78,3 +78,5 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
     </div>
   );
 });
+
+export default Dashboard;

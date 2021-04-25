@@ -11,7 +11,7 @@ import { Spinner } from "../../components/Spinner/Spinner";
 
 import styles from "./Exchange.module.scss";
 
-export const Exchange = observer(function Exchange(): JSX.Element {
+const Exchange = observer(function Exchange(): JSX.Element {
   const { ExchangeModel } = useStore();
 
   const activeAccountTo = ExchangeModel.activeAccountTo;
@@ -205,3 +205,5 @@ export const Exchange = observer(function Exchange(): JSX.Element {
     </div>
   );
 });
+
+export default Exchange;

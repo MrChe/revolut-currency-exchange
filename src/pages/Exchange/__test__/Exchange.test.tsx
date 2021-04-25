@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { Exchange } from "../Exchange";
+import Exchange from "../Exchange";
 import { rootModel } from "../../../models/RootModel";
 import { ratesData } from "../../../../tests/mockData";
 import { TestWrapper } from "../../../../tests/testWrapper";

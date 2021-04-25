@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { Dashboard } from "../Dashboard";
+import Dashboard from "../Dashboard";
 import { rootModel } from "../../../models/RootModel";
 import { ratesData } from "../../../../tests/mockData";
 import { TestWrapper } from "../../../../tests/testWrapper";

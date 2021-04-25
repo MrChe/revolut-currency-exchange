@@ -1,20 +1,28 @@
-import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { Dashboard } from "../pages/Dashboard/Dashboard";
-import { Exchange } from "../pages/Exchage/Exchange";
+import React, { Suspense, lazy } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
+const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard"));
+const Exchange = lazy(() => import("../pages/Exchange/Exchange"));
 
 export const ApplicationRouter = (): JSX.Element => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/dashboard/:id?" exact>
-          <Dashboard />
-        </Route>
-        <Route path="/account/:id" exact>
-          <Exchange />
-        </Route>
-        <Redirect from={"/"} to={"/dashboard"} />
-      </Switch>
-    </BrowserRouter>
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path="/dashboard/:id?" exact>
+            <Dashboard />
+          </Route>
+          <Route path="/account/:id" exact>
+            <Exchange />
+          </Route>
+          <Redirect from={"/"} to={"/dashboard"} />
+        </Switch>
+      </Suspense>
+    </Router>
   );
 };
