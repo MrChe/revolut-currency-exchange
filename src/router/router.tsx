@@ -5,14 +5,22 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import Exchange from "../pages/Exchange/Exchange";
+import { Spinner } from "../components/Spinner/Spinner";
 
-const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard"));
-const Exchange = lazy(() => import("../pages/Exchange/Exchange"));
+import styles from "../App.module.scss";
 
 export const ApplicationRouter = (): JSX.Element => {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className={styles.LoadingWrapper}>
+            <Spinner />
+          </div>
+        }
+      >
         <Switch>
           <Route path="/dashboard/:id?" exact>
             <Dashboard />
