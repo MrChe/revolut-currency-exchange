@@ -1,6 +1,6 @@
 # Revolut Exchange Currency
 
-## Task Description see [this](TASK_DESCRIPTION.md)
+## Task Description see [this](TASK_DESCRITION.md)
 ## Usage
 **Development**
 
