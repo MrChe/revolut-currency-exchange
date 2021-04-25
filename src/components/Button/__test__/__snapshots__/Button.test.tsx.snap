@@ -2,6 +2,7 @@
 
 exports[`Button Component Button bg white disabled snapshot 1`] = `
 <button
+  aria-label="test"
   className="Button Circle Bg_Type_White"
 >
   Hello
@@ -10,6 +11,7 @@ exports[`Button Component Button bg white disabled snapshot 1`] = `
 
 exports[`Button Component Button bg white with icon snapshot 1`] = `
 <button
+  aria-label="test"
   className="Button Circle Bg_Type_White"
 >
   <test />
@@ -18,6 +20,7 @@ exports[`Button Component Button bg white with icon snapshot 1`] = `
 
 exports[`Button Component Button circle with icon snapshot 1`] = `
 <button
+  aria-label="test"
   className="Button Circle"
 >
   <test />
@@ -26,6 +29,7 @@ exports[`Button Component Button circle with icon snapshot 1`] = `
 
 exports[`Button Component Button with text snapshot 1`] = `
 <button
+  aria-label="test"
   className="Button"
 >
   Hello

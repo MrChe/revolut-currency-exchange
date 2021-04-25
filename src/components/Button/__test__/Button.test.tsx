@@ -5,13 +5,13 @@ import { Icon } from "../../../components/icons/icons";
 
 describe("Button Component", () => {
   it("Button with text snapshot", () => {
-    const tree = renderer.create(<Button>Hello</Button>).toJSON();
+    const tree = renderer.create(<Button name={"test"}>Hello</Button>).toJSON();
     expect(tree).toMatchSnapshot();
   });
   it("Button circle with icon snapshot", () => {
     const tree = renderer
       .create(
-        <Button type={"circle"}>
+        <Button name={"test"} type={"circle"}>
           <Icon.Exchange />
         </Button>,
       )
@@ -22,7 +22,7 @@ describe("Button Component", () => {
   it("Button bg white with icon snapshot", () => {
     const tree = renderer
       .create(
-        <Button type={"circle"} bg={"white"}>
+        <Button name={"test"} type={"circle"} bg={"white"}>
           <Icon.Exchange />
         </Button>,
       )
@@ -33,7 +33,7 @@ describe("Button Component", () => {
   it("Button bg white disabled snapshot", () => {
     const tree = renderer
       .create(
-        <Button type={"circle"} bg={"white"}>
+        <Button name={"test"} type={"circle"} bg={"white"}>
           Hello
         </Button>,
       )
