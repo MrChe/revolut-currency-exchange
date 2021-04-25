@@ -63,7 +63,7 @@ export const Dashboard = observer(function Dashboard(): JSX.Element {
         </div>
       </div>
       <div className={styles.Controls}>
-        <Button onClick={goToExchange} type={"circle"}>
+        <Button name={"go_to_accounts"} onClick={goToExchange} type={"circle"}>
           <Icon.Exchange />
         </Button>
       </div>

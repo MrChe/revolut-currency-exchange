@@ -135,7 +135,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
   return ExchangeModel.accountsAsArray.length !== 0 ? (
     <div className={styles.Exchange}>
       <div className={styles.HeaderWrapper}>
-        <Button onClick={handleCancel} bg={"white"}>
+        <Button name={"cancel"} onClick={handleCancel} bg={"white"}>
           Cancel
         </Button>
       </div>
@@ -169,6 +169,7 @@ export const Exchange = observer(function Exchange(): JSX.Element {
       </div>
       <div className={styles.ExchangeControlDivider}>
         <Button
+          name={"exchange"}
           bg={"white"}
           onClick={handleExchange}
           disabled={ExchangeModel.isDisableExchange}

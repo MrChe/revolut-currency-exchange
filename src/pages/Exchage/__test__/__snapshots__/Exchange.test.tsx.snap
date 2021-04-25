@@ -8,6 +8,7 @@ exports[`Exchange Page Exchange snapshot 1`] = `
     className="HeaderWrapper"
   >
     <button
+      aria-label="cancel"
       className="Button Bg_Type_White"
       onClick={[Function]}
     >
@@ -178,6 +179,7 @@ exports[`Exchange Page Exchange snapshot 1`] = `
     className="ExchangeControlDivider"
   >
     <button
+      aria-label="exchange"
       className="Button Bg_Type_White"
       disabled={false}
       onClick={[Function]}

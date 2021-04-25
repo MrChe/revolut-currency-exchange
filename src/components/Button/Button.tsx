@@ -9,11 +9,13 @@ interface IButtonProps {
   onClick?: () => void;
   type?: "circle" | "normal";
   bg?: "transparent" | "white" | "black";
+  name: string;
 }
 
 export const Button = (props: IButtonProps): JSX.Element => {
   return (
     <button
+      aria-label={props.name}
       onClick={props.onClick}
       disabled={props.disabled}
       className={cn({

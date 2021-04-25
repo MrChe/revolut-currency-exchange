@@ -140,6 +140,7 @@ exports[`Dashboard Page Dashboard snapshot 1`] = `
     className="Controls"
   >
     <button
+      aria-label="go_to_accounts"
       className="Button Circle"
       onClick={[Function]}
     >
