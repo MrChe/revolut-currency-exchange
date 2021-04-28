@@ -11,6 +11,8 @@ import { Spinner } from "../../components/Spinner/Spinner";
 
 import styles from "./Exchange.module.scss";
 
+const REGEXP = /([^\d]*)(\d*(\.\d{0,2})?)(.*)/;
+
 const Exchange = observer(function Exchange(): JSX.Element {
   const { ExchangeModel } = useStore();
 
@@ -47,14 +49,12 @@ const Exchange = observer(function Exchange(): JSX.Element {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
-    const regExp = /^[0-9\b\.]+$/;
 
     // if value is not blank, then test the regex
 
     console.log("before value", value);
-    if (value === "" || regExp.test(value)) {
       console.log("after value", value);
-      ExchangeModel.updateInputFromValue(value);
+      ExchangeModel.updateInputFromValue(value.replace(REGEXP, '$2'));
       if (activeAccountFrom && activeAccountTo) {
         ExchangeModel.updateInputToValue(
           ExchangeModel.convertCurrency(value ? value : 0, {
@@ -63,17 +63,15 @@ const Exchange = observer(function Exchange(): JSX.Element {
           }),
         );
       }
-    }
+    
   };
 
   const handleToChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const regExp = /^[0-9\b\.]+$/;
 
     // if value is not blank, then test the regex
 
-    if (value === "" || regExp.test(value)) {
-      ExchangeModel.updateInputToValue(value);
+      ExchangeModel.updateInputToValue(value.replace(REGEXP, '$2'));
       if (activeAccountTo && activeAccountFrom) {
         ExchangeModel.updateInputFromValue(
           ExchangeModel.convertCurrency(value ? value : 0, {
@@ -82,7 +80,7 @@ const Exchange = observer(function Exchange(): JSX.Element {
           }),
         );
       }
-    }
+    
   };
 
   const handleExchange = () => {
